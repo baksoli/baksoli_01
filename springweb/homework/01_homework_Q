@@ -1,0 +1,32 @@
+1. Dynamic WebProject에서 스프링 개발환경으로 설정하는 
+	핵심 front-controller인 dispatcher-servlet의 설정
+	방법을 기술하세요
+	
+2. http://localhost:7080/springweb/call.do를 통해서
+	초기 화면인  "안녕하세요"를 문자열로 화면에 출력한다.
+	web.xml
+	dispatcher-servlet.xml
+	controller
+	jsp 
+	단을 구성하고, 해당 구성에서 위 url 기준으로 처리되는 프로세서를
+	기술하세요.
+ 3. container역할을 하는 xml에서 1:1 객체 연관관계 설정을 예제로
+ 	만들 내용을 간단하게 객체 관점에서 메모리 로딩 내용을 기술하세요.
+ 	
+ 4. Shopping VO클래스와 Product VO클래스를 만들어 상품을 쇼핑카트에
+ 	담는 1:다 관계의 처리를 DI를 통해서 생성하고, 쇼핑카트에 담긴 물품 
+ 	리스트를 화면에 출력 하세요.(namespace 처리)
+
+ 	
+ 	
+ 	
+ 	
+ 	
+ 	
+ 	
+ 	
+ 	 
+	
+	
+	
+	

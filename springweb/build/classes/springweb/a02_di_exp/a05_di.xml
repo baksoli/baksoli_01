@@ -1,0 +1,73 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:task="http://www.springframework.org/schema/task"
+	xmlns:aop="http://www.springframework.org/schema/aop"
+	xmlns:context="http://www.springframework.org/schema/context"
+	xmlns:mvc="http://www.springframework.org/schema/mvc"
+	xmlns:p="http://www.springframework.org/schema/p"
+	xmlns:c="http://www.springframework.org/schema/c"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns:util="http://www.springframework.org/schema/util"
+	xmlns:websocket="http://www.springframework.org/schema/websocket"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans
+       http://www.springframework.org/schema/beans/spring-beans-4.0.xsd
+        http://www.springframework.org/schema/aop
+       http://www.springframework.org/schema/aop/spring-aop-4.0.xsd
+       http://www.springframework.org/schema/context
+       http://www.springframework.org/schema/context/spring-context-4.0.xsd
+  		http://www.springframework.org/schema/mvc
+		http://www.springframework.org/schema/mvc/spring-mvc-4.0.xsd     
+        http://www.springframework.org/schema/util
+       http://www.springframework.org/schema/util/spring-util-4.0.xsd
+   		http://www.springframework.org/schema/websocket
+		http://www.springframework.org/schema/websocket/spring-websocket.xsd
+       http://www.springframework.org/schema/task
+       http://www.springframework.org/schema/task/spring-task.xsd">
+	   
+	<!-- 
+	# autowire
+	1. 객체가 컨테이너에서 메모리에 로딩되었을 때, 설정 옵션에 따라 
+		객체 간에 자동으로 할당되는 것을 말한다.
+	2. 설정 옵션.
+		1) byType : 객체간에 특정메서드의 데이터 type에 의해서
+			자동 할당 되는 것을 말한다.
+			ex) Man 안에 Woman 선언 되고, Woman클래스가 컨테이너 메모리에 
+				의해	로딩될 때, setWoman(Woman woman) type을
+				확인하고 자동으로 할당되어 처리되어진다.
+	 			- autowire = "byType"
+	 	2) byName : 객체간의 할당할 매개변수 type이 같고,메서드 set의
+	 		property가 참조객체 id값과 동일할 때, 할당이 된다.
+	 		id="woman01" class="@@@.Woman" 
+	 		setWoman01(Woman woman)
+	 		선언된 id가 woman01 이고, 매개변수 type은 동일하고,
+	 		메서드명이 setWoman01일 때, 자동으로 할당이 된다.
+	 -->
+	 <!-- woman 
+	 <bean class="springweb.a02_di_exp.z01_vo.Woman"
+	 	c:name="김리나" c:age="25" c:loc="서울 방배동"/>
+	 -->
+	 <bean class="springweb.a02_di_exp.z01_vo.Woman"
+	 	c:name="신미나" c:age="27" c:loc="서울 서초동"/>
+	 <bean id="m01" class="springweb.a02_di_exp.z01_vo.Man"
+	 	c:name="김철수" autowire="byType"/>
+	 	
+	 <!--  byname 할당 처리. Product -->
+	 <bean id="product1" class="springweb.a02_di_exp.z01_vo.Product"
+	 	c:name="사과" c:price="3000" c:cnt="2" />
+	 <bean id="product" class="springweb.a02_di_exp.z01_vo.Product"
+	 	c:name="바나나" c:price="4000" c:cnt="3" />
+	 <bean id="mart01" class="springweb.a02_di_exp.z01_vo.Mart"
+	 	c:name="행복마트" autowire="byName"/>
+	 	
+	 <!-- 과제
+	 Bus Passenger 1:1 관계 byName에 의해서 설정하여
+	 @@ 번 버스에 
+	 승객 @@ 가 탑승했습니다.를 출력되게 처리하세요.
+	  -->
+	  
+	 <bean id="passenger" class="springweb.a02_di_exp.z01_vo.Passenger"
+	 	c:name="공유"/>
+	 <bean id="bus01" class="springweb.a02_di_exp.z01_vo.Bus"
+	 	c:busNum="140" autowire="byName"/>
+	
+</beans> 

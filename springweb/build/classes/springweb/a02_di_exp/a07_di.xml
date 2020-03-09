@@ -1,0 +1,117 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:task="http://www.springframework.org/schema/task"
+	xmlns:aop="http://www.springframework.org/schema/aop"
+	xmlns:context="http://www.springframework.org/schema/context"
+	xmlns:mvc="http://www.springframework.org/schema/mvc"
+	xmlns:p="http://www.springframework.org/schema/p"
+	xmlns:c="http://www.springframework.org/schema/c"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns:util="http://www.springframework.org/schema/util"
+	xmlns:websocket="http://www.springframework.org/schema/websocket"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans
+       http://www.springframework.org/schema/beans/spring-beans-4.0.xsd
+        http://www.springframework.org/schema/aop
+       http://www.springframework.org/schema/aop/spring-aop-4.0.xsd
+       http://www.springframework.org/schema/context
+       http://www.springframework.org/schema/context/spring-context-4.0.xsd
+  		http://www.springframework.org/schema/mvc
+		http://www.springframework.org/schema/mvc/spring-mvc-4.0.xsd     
+        http://www.springframework.org/schema/util
+       http://www.springframework.org/schema/util/spring-util-4.0.xsd
+   		http://www.springframework.org/schema/websocket
+		http://www.springframework.org/schema/websocket/spring-websocket.xsd
+       http://www.springframework.org/schema/task
+       http://www.springframework.org/schema/task/spring-task.xsd">
+	<!-- 
+	# container의 객체 type의 선언 범위(scope). 주의) session scope가 아님!!
+	1. singleton : 특정한 컨테이너 메모리에서 하나의 객체만 생성되어
+		사용될 수 있도록 할 때, 활용된다. (default)
+	2. prototype : 컨테이너에서 동일 class로 여러개의 객체가 
+		생성되어 사용할 필요가 있을 때, 활용된다. 
+		다른 소스에서 해당 객체를 호출될 때마다, 객체가 생성되어 처리된다.
+	 -->   
+	 <!--  container 안에 있는 기본 bean 선언은 singleton으로 객체가 한개만 만들어진다. -->
+	 <bean id="p01" class="springweb.a02_di_exp.z01_vo.Person"/>
+	 <bean id="w01" class="springweb.a02_di_exp.z01_vo.Woman" scope="prototype"/>
+	
+	<!-- 
+	# 공통 설정 정보를 container에 불려들여 사용하기.
+	1. 공통 설정 정보 호출 파일 처리.
+		context:property-placeholder라는 context의 
+		namespace로 설정할 수 있다.
+	2. 공통 파일의 위치지정.
+		location="classpath:/src기준으로 파일 설정.."
+	3. 공통 파일의 지정한 데이터
+		1) xml에선 ${이름} 으로 접근 가능.
+		2) java에서 @Value("${이름}") 으로 접근 가능.
+			- <context:annotation-config> 선언시 가능!
+		
+		db.driver=com.mysql.driver
+		db.jdbcURL=jdbe:mysql://host/test
+		db.user=madvirus
+		db.password=bkchoi
+	 -->
+	<!-- annotation-config는 java source에서 annotation으로 접근이 가능하게 한다.  -->
+	<context:annotation-config/>
+	<context:property-placeholder 
+		location="classpath:/springweb/a02_di_exp/common.properties,
+				  classpath:/springweb/a02_di_exp/webinfo.properties"/>
+	<bean id="dbcon" class="springweb.a02_di_exp.z02_anno.DBConnect"
+		c:_0="${db.driver}"
+		c:_1="${db.jdbcURL}"
+		c:_2="${db.user}"
+		c:_3="${db.password}"/>
+		
+	<!--
+	ex) 연습문제 
+		webinfo.properties 파일생성.
+		web.server01=192.168.77.88
+		web.port=7799
+		web.url=/springweb/start.do
+		ServerConnect.java를 통해 해당 정보를 출력해라.
+		
+	 -->
+	 <bean id="serverCon" class="springweb.a02_di_exp.z02_anno.ServerConnect"
+	 	c:_0="${web.server01}"
+	 	c:_1="${web.port}"
+	 	c:_2="${web.url}"/>
+	 	
+	 	
+	 <!-- 
+	 # spring에서 지원하는 다국어 처리 모듈 설정.
+	 1. api : org.springframework.context.support.ResourceBundleMessageSource
+	 2. 메서드 : basenames 매개변수값 list의 데이터를 입력하게 한다.
+	 	- 입력하는 데이터는 다국어 처리 파일 
+	 3. 메서드에서 지정된 default 위치에 다국어 message file 생성.
+	 	1) 기본 파일. greeting.properties
+	 	2) 한국어 파일 greeting_ko.properties
+	 	3) 영어 파일 greeting_en.properties
+	 	...
+	 4. DL에서 해당 내용 호출과 데이터 확인.
+	 
+	 
+	 	messageSource로 지정된 spring framework에 할당되기 때문에
+	 	반드시 id를 messageSource로 처리하여야 한다.
+	  -->
+	  <bean id="messageSource" class="org.springframework.context.support.ResourceBundleMessageSource">
+	  	<property name="basenames">
+	  		<list>
+	  		<!-- class path로 설정된 기본 위치에서 파일을 생성. -->
+	  			<value>message.greeting</value>
+	  			<value>msg2.member</value>
+	  		</list>
+	  	</property>
+	  	<property name="defaultEncoding" value="utf-8"/>
+	  </bean>
+	  <!-- 
+	  ex) 다국어 처리 확인 예제.
+	  	   1) 언어 설정 파일 msg2.member
+	  	   2) 코드 내용
+	  	   		로그인 (Login)
+	  	   		@@@님 어서오세요!! @@@ 개발 사이트입니다.
+	  	   			(@@@ welcome! This is @@@ development site!)
+	   -->
+	
+	
+</beans> 

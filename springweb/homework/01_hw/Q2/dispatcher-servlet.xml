@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:task="http://www.springframework.org/schema/task"
+	xmlns:aop="http://www.springframework.org/schema/aop"
+	xmlns:context="http://www.springframework.org/schema/context"
+	xmlns:mvc="http://www.springframework.org/schema/mvc"
+	xmlns:p="http://www.springframework.org/schema/p"
+	xmlns:c="http://www.springframework.org/schema/c"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns:util="http://www.springframework.org/schema/util"
+	xmlns:websocket="http://www.springframework.org/schema/websocket"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans
+       http://www.springframework.org/schema/beans/spring-beans-4.0.xsd
+        http://www.springframework.org/schema/aop
+       http://www.springframework.org/schema/aop/spring-aop-4.0.xsd
+       http://www.springframework.org/schema/context
+       http://www.springframework.org/schema/context/spring-context-4.0.xsd
+  		http://www.springframework.org/schema/mvc
+		http://www.springframework.org/schema/mvc/spring-mvc-4.0.xsd     
+        http://www.springframework.org/schema/util
+       http://www.springframework.org/schema/util/spring-util-4.0.xsd
+   		http://www.springframework.org/schema/websocket
+		http://www.springframework.org/schema/websocket/spring-websocket.xsd
+       http://www.springframework.org/schema/task
+       http://www.springframework.org/schema/task/spring-task.xsd">
+	   
+<!-- 
+#container 역할을 하는 dispatcher-servlet.xml 
+1. xml로 만들어져 있다. 
+	1) dtd 파일 
+		선언 xml로 사용할 tag와 해당 tag의 속성을 정의. 
+		사용할 bean class가 tag로 선언될 수 있도록 필요로 한다. 
+	2) xml tag 선언 
+		bean 객체를 선언 
+2. 선언할 내용. 
+	1) 사용할 MVC 패턴의 클래스 ==> 객체로 변환되어 메모리에 로딩 
+		- controller, service, dao, database 모듈. 
+		- 기타 스프링에서 지원하는 class들. 
+3. 실습내용. 
+		1) 다른 필요 요소는 스프링에서 지원하는 default로 선언 
+		2) controller 선언 초기 스프링 환경에서 로딩을 처리한다. 
+-->
+	<!-- container에서는 class의 패키지명.클래스명까지 등록해야 
+		서버가 시작될 때, 객체로 생성이 된다. -->
+
+	<!-- homework -->
+	<bean class="springweb.a01_start.H01_HWController"></bean>
+
+</beans> 

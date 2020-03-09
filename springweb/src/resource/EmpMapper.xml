@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+	PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+	"http://mybatis.org/dtd/mybatis-3-mapper.dtd" >	
+<!-- 
+1. 인터페이스 이름 : springweb.a03_database.repository.EmpDao
+	==> namespace로 연결..
+2. 메서드 구성요소 
+	ArrayList<Emp> emplist()
+	1) return 유형 ==> resultMap/resultType과 연결..
+			resultMap : ArrayList<VO>
+			resultType : Emp, int, 
+	2) 메서드명 ==> id명으로 활용된다.
+			
+	3) 매개변수==> parameterType 연결..
+
+ -->
+<mapper namespace="springweb.a03_database.repository.EmpDao">
+	<!-- type은 단위 데이터 VO객체를 단위 객체
+		1. mybatis.Spring에서 선언된 alias의 vo를 선언한다.
+		2. id는 sql의 요소객체에 공통으로 사용된다.
+	 -->
+	<resultMap type="emp" id="empResult"></resultMap>
+	<!-- 인터페이스와 연결된 sql ArrayList<Emp> emplist() -->	
+	<select id="emplist" resultMap="empResult" parameterType="emp">
+		SELECT * FROM emp01
+		WHERE 1=1
+		<if test="ename!=null">
+		AND ename like '%'||#{ename}||'%'
+		</if>
+		<if test="job!=null">
+		AND job like '%'||#{job}||'%'
+		</if>
+	</select>
+	<!-- null이 아닐 때, keyword검색 처리..
+	ename!=null ==> sch.getEname()!=null 처리,
+	job!=null ==> sch.getJob()!=null 처리 
+	
+	-->
+
+</mapper>	

@@ -1,0 +1,10 @@
+# 공통 설정 정보
+# 1. Database 정보
+# 	1) 개발서버
+driver=oracle.jdbc.driver.OracleDriver
+dbserver=jdbc:oracle:thin:@localhost:1521:xe
+name=scott
+pass=tiger
+#	2) 운영서버
+# 위와 같이 특정 서버에 데이터를 확인하고자 할때, 주석으로 
+# 간편하게 소스나 설정의 변경 없이 공통파일(info)로 처리하게 한다.

@@ -1,0 +1,142 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:task="http://www.springframework.org/schema/task"
+	xmlns:aop="http://www.springframework.org/schema/aop"
+	xmlns:context="http://www.springframework.org/schema/context"
+	xmlns:mvc="http://www.springframework.org/schema/mvc"
+	xmlns:p="http://www.springframework.org/schema/p"
+	xmlns:c="http://www.springframework.org/schema/c"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns:util="http://www.springframework.org/schema/util"
+	xmlns:websocket="http://www.springframework.org/schema/websocket"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans
+       http://www.springframework.org/schema/beans/spring-beans-4.0.xsd
+        http://www.springframework.org/schema/aop
+       http://www.springframework.org/schema/aop/spring-aop-4.0.xsd
+       http://www.springframework.org/schema/context
+       http://www.springframework.org/schema/context/spring-context-4.0.xsd
+  		http://www.springframework.org/schema/mvc
+		http://www.springframework.org/schema/mvc/spring-mvc-4.0.xsd     
+        http://www.springframework.org/schema/util
+       http://www.springframework.org/schema/util/spring-util-4.0.xsd
+   		http://www.springframework.org/schema/websocket
+		http://www.springframework.org/schema/websocket/spring-websocket.xsd
+       http://www.springframework.org/schema/task
+       http://www.springframework.org/schema/task/spring-task.xsd">
+       
+<!-- 
+# 공통설정파일 선언. (20200304)
+	데이터베이스 설정 정보 위치
+ -->
+	<context:property-placeholder location="classpath:/resource/properties/info"/>
+	   
+<!-- 
+#container 역할을 하는 dispatcher-servlet.xml 
+1. xml로 만들어져 있다. 
+	1) dtd 파일 
+		선언 xml로 사용할 tag와 해당 tag의 속성을 정의. 
+		사용할 bean class가 tag로 선언될 수 있도록 필요로 한다. 
+	2) xml tag 선언 
+		bean 객체를 선언 
+2. 선언할 내용. 
+	1) 사용할 MVC 패턴의 클래스 ==> 객체로 변환되어 메모리에 로딩 
+		- controller, service, dao, database 모듈. 
+		- 기타 스프링에서 지원하는 class들. 
+3. 실습내용. 
+		1) 다른 필요 요소는 스프링에서 지원하는 default로 선언 
+		2) controller 선언 초기 스프링 환경에서 로딩을 처리한다. 
+-->
+	<!-- container에서는 class의 패키지명.클래스명까지 등록해야 
+		서버가 시작될 때, 객체로 생성이 된다. 
+	<bean class="springweb.a01_start.A01_StartController"></bean>
+	<bean class="springweb.a01_start.A02_FirstController"></bean>
+	-->
+	<!-- homework 
+	<bean class="springweb.a01_start.H01_HWController"></bean>
+	-->
+	<!-- 
+	1. 위 container가 로딩될 때, 처리하는 controller, service, repository
+	등을 자동으로 등록 처리하는 component-scan으로 처리할 수 있다. 
+	2. include-filter를 통해서 annotation으로 해당 type의 객체들을 자동으로
+	등록하는지를 설정할 수 있다.
+	
+	 -->
+	<!-- src하위에 있는 springweb패키지에 클래스를 대상으로 한다. 
+	1. 아래의 선언한 @Controller, @Service, @Repository가 선언된 
+		class는 자동으로 container에 객체로 등록이 된다.
+	-->
+	<!-- 1. 컨테이너에 들어가는 객체들의 자동 등록 처리. -->
+	<context:component-scan base-package="springweb">
+		<context:include-filter type="annotation" expression="org.springframework.stereotype.Controller"/>
+		<context:include-filter type="annotation" expression="org.springframework.stereotype.Service"/>
+		<context:include-filter type="annotation" expression="org.springframework.stereotype.Repository"/>
+	</context:component-scan>
+	<!-- 2. MVC
+			- controller
+			- model : view단에 보여줄 핵심 데이터. controller단에서 선언.
+			- view : 화면 처리.(jsp, excel, pdf, file, json-ajax)
+				view에 대한 처리를 container에서 선정할 수 있는데,
+				이것을 viewresolver에 의해서 여러가지 view를 처리할 수 있다.
+		 3. 기본 viewresolver 처리.
+		 	- jsp로 html 화면 처리.
+	# jsp ViewResolver 설정.
+	
+	 -->
+	 <!--
+	 <bean id="viewResolver" class="org.springframework.web.servlet.view.InternalResourceViewResolver">
+	 	 접두어와 접미어를 이용하여 간편하게 jsp코드를 호출할 수 있게 한다.
+	 	WEB-INF\\views\\a01_start.jsp
+	 	공통부분인 : 접두어 - WEB-INF\\views\\
+	 			    접미어 - .jsp
+	 	를 설정을 해주면, controller 에서는 중간에 있는 파일명만 선언하면 된다.
+	 	 
+	 	<property name="prefix" value="WEB-INF/views/"/>
+	 	<property name="suffix" value=".jsp"/>
+	 	
+	 </bean>-->
+	 
+	  <bean id="messageSource" class="org.springframework.context.support.ResourceBundleMessageSource">
+	  	<property name="basenames">
+	  		<list>
+	  		<!-- class path로 설정된 기본 위치에서 파일을 생성. -->
+	  			<value>message.error</value>
+	  		</list>
+	  	</property>
+	  	<property name="defaultEncoding" value="utf-8"/>
+	  </bean>
+
+	<!-- 2020.03.04 -->
+	<!-- 1. DBCP 설정 
+			1) 드라이버
+			2) url(서버ip)
+			3) 계정명
+			4) 비밀번호
+	-->
+		<!-- 자원 해제 메서드 선언 : destroy-method -->
+	<bean id="dataSource" class="org.apache.commons.dbcp.BasicDataSource"
+		destroy-method="close">
+		<property name="driverClassName" value="${driver}"></property>
+		<property name="url" value="${dbserver}"></property>
+		<property name="username" value="${name}"></property>
+		<property name="password" value="${pass}"></property>
+	</bean>
+
+	<!-- 2. Mybatis 설정 -->
+	<bean id="sqlSessionFactory" class="org.mybatis.spring.SqlSessionFactoryBean">
+		<!-- dbcp로 연결된 정보를 framework의 모듈에 할당 -->
+		<property name="dataSource" ref="dataSource"/>
+		<!-- mybatis 공통 설정 파일 선언. -->
+		<property name="configLocation" value="classpath:resource/mybatis.Spring.xml"/>
+	</bean>
+	<!-- 3. Dao 인터페이스 folder 위치 설정 
+			1) 추가 등록시, value값에 (,) 콤마로 추가 처리.
+			ex)
+			value="springweb.a03_database.repository,
+					springweb.a04_board.repository
+			2) 선언된 인터페이스는 상속하는 실제 객체를 통해서 할당되어 service단에
+				넘겨준다.
+	-->
+	 <bean class="org.mybatis.spring.mapper.MapperScannerConfigurer">
+	 	<property name="basePackage" value="springweb.a03_database.repository"/>
+	 </bean>
+</beans> 

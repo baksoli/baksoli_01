@@ -1,0 +1,138 @@
+
+# 과제
+1. 요청값 처리 패턴(3가지)을 예제와 함께 기술하세요.
+   
+   1) 객체를 통해 처리
+   	@RequestMapping("/member.do")
+   	public String member(Member mem01, Model d){
+   		d.addAttribute("mem01",mem01);
+   		return .../view.jsp;
+   	}
+   
+   2) 쿠기값을 통해 처리
+   	@RequestMapping("/member.do")
+   	public String member(@CookieValue(value="ck_value01", required=false), Model d){
+   		d.addAttribute("ck_value01",ck_value01);
+   		return .../view.jsp;
+   	}
+   
+   3) url 주소를 통해 처리
+	@RequestMapping("/{memberId}.do")
+	public String memberId(@PathVariable("memberId") String memberId, Model d){
+		d.addAttribute("memId",memberId);
+		return .../view.jsp;
+	}
+   
+   
+2. ModelAttribute를 활용하는 경우 2가지를 코드와 함께 기술하세요.
+	1) controller 공통의 요청값 처리를 위한 기본 값을 설정 할 때,
+	@ModelAttribute("searchType")
+	public List<SearchType> search(){
+		List<SearchType> list = new ArrayList<SearchType>();
+		list.add......
+		...
+		return list;
+	}
+	2) 요청값과 Model 값을 동시에 설정 할 때,
+	@RequestMapping("/search.do")
+	public String search(@ModelAttribute("search") SearchVO search){
+		return "searchForm"
+	}
+	
+	
+3. modelattribute를 이용해서, 멀티check, 단일check, select
+형태의 요소객체를 controller단에 선언하고, view단에서 spring 태그를
+이용해서 구현 하세요.
+
+	*Controller 단
+	@ModelAttribute("furniture")
+	public List<String> furniture(){
+		return Arrays.asList("소파","탁상","침대","옷장","거울");
+	}
+	@ModelAttribute("brand")
+	public List<String> brand(){
+		return Arrays.asList("이케아", "한샘", "일룸", "리바트");
+	}
+	@ModelAttribute("colorCode")
+	public List<Code> colorCode(){
+		return Arrays.asList(
+					new Code("1", "white"),
+					new Code("2", "black"),
+					new Code("3", "navy"),
+					new Code("4", "green"));
+	}
+	
+	*View 단
+	<%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
+	
+	<form:form commandName="furnitureInfo">
+		<label for="furniture">구매할 가구(다중선택)</label>
+		<form:checkboxes items="${furniture}" path="furniture"/>
+		<label for="brand">선호하는 가구 브랜드(단일선택)</label>
+		<form:radiobuttons items="${brand}" path="brand"/>
+		<label for="colorCode">색상</label>
+		<form:select path="colorCode">
+			<option value="">색상선택</option>
+			<form:options items="${colorCode}" itemLabel="value" itemValue="key"/>
+		</form:select>
+	</form:form>
+
+
+
+4. Validator를 상속받아서 사용자 정의 XXXValidator클래스에서  
+에러 처리형식 2가지를 기술하세요.
+	
+	1) reJectValue
+		ex) errors.rejectValue("jobCode","required");
+	2) ValidationUtils.rejectIfEmptyOrWhitespace(errors,"해당속성","에러코드");
+		ex) ValidationUtils.rejectIfEmptyOrWhitespace(errors, "jobCode","required");
+		
+	
+5. form객체에 에러처리시 사용되는 error.properties설정과 
+XXXValidator클래스에서 사용되는 처리를 기술하세요.	
+
+	* error.properties
+	1)  빈 등록.
+	<bean id="messageSource" class="org.springframework.context.support.ResourceBundleMessageSource">
+	  	<property name="basenames">
+	  		<list>
+	  		<!-- class path로 설정된 기본 위치에서 파일을 생성. -->
+	  			<value>message.error</value>
+	  		</list>
+	  	</property>
+	  	<property name="defaultEncoding" value="utf-8"/>
+	  </bean>
+	  
+	2) key = value 값 지정.
+	required=\uD544\uC218\uC785\uB825
+	
+	*XXXValidator클래스
+	1) Validator 상속(implements)
+	2) supports, validate 메소드 오버라이드
+	@Override
+	public boolean supports(Class<?> arg0) {
+		return MemberReg.class.isAssignableFrom(arg0);
+	}
+	@Override
+	public void validate(Object target, Errors errors){
+		- 1. 대상 객체 VO 매핑
+		MemberReg mReg = (MemberReg)target;
+		- 2. rejctValue 혹은 ValidationUtils.rejectIfEmptyWhitespace 사용하여 에러 처리
+		ValidationUtils.rejectIfEmptyOrWhitespace(errors, "jobCode", "required");
+	}
+
+6. 구구단 입력
+   [    ] X [    ] [계산] 
+   계산을 클릭시, 1번째 입력 안되있으면 에러로 1번째 입력 메시지
+   계산을 클릭시, 2번째 입력 안되있으면 에러로 2번째 입력 메시지
+   둘다 정상 입력시에는 연산결과 출력..
+   
+   - H04_CalcHWController.java
+   - CalcFromValidator.java
+   - Answer.java
+   - Number.java
+   - h04_calcForm.jsp
+   - h04_resultView.jsp
+   - error.propertie
+   
+   

@@ -1,0 +1,202 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:task="http://www.springframework.org/schema/task"
+	xmlns:aop="http://www.springframework.org/schema/aop"
+	xmlns:context="http://www.springframework.org/schema/context"
+	xmlns:mvc="http://www.springframework.org/schema/mvc"
+	xmlns:p="http://www.springframework.org/schema/p"
+	xmlns:c="http://www.springframework.org/schema/c"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns:util="http://www.springframework.org/schema/util"
+	xmlns:websocket="http://www.springframework.org/schema/websocket"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans
+       http://www.springframework.org/schema/beans/spring-beans-4.0.xsd
+        http://www.springframework.org/schema/aop
+       http://www.springframework.org/schema/aop/spring-aop-4.0.xsd
+       http://www.springframework.org/schema/context
+       http://www.springframework.org/schema/context/spring-context-4.0.xsd
+  		http://www.springframework.org/schema/mvc
+		http://www.springframework.org/schema/mvc/spring-mvc-4.0.xsd     
+        http://www.springframework.org/schema/util
+       http://www.springframework.org/schema/util/spring-util-4.0.xsd
+   		http://www.springframework.org/schema/websocket
+		http://www.springframework.org/schema/websocket/spring-websocket.xsd
+       http://www.springframework.org/schema/task
+       http://www.springframework.org/schema/task/spring-task.xsd">
+	   
+	<bean id="product" class="springweb.a02_di_exp.z01_vo.Product">
+	<property name="name" value="과자"/>
+	<property name="price" value="1500"/>
+	<property name="cnt" value="10"/>
+	</bean>
+	
+	<!-- 
+	// ArrayList<String> blist = new ArrayList<String>();
+	// blist.add("사과");
+	// blist.add("바나나");
+	// blist.add("딸기");
+	# 다중의 list형태의 데이터 할당하는 bean 객체 설정하기.
+	-->
+	<bean id="mart01" class="springweb.a02_di_exp.z01_vo.Mart2">
+		<constructor-arg value="P-Market"/>
+		<property name="blist">
+			<!-- 
+			#list
+			 1. 속성 : value-type="데이터 유형" 데이터 할당시 데이터 유형을 선언할 수 있다. 
+			 2. 하위 요소객체
+			 	value 
+			 -->
+			<list value-type="java.lang.String">
+				<value>사과</value>
+				<value>바나나</value>
+				<value>딸기</value>
+				<value>오렌지</value>
+			</list>
+		</property>
+	</bean>
+	
+	<!-- 단위객체를 선언.. -->
+	<bean id="p01" class="springweb.a02_di_exp.z01_vo.Product">
+		<constructor-arg value="사과"/>
+		<constructor-arg value="3000"/>
+		<constructor-arg value="2"/>
+	</bean>
+	<bean id="p02" class="springweb.a02_di_exp.z01_vo.Product">
+		<constructor-arg value="바나나"/>
+		<constructor-arg value="4000"/>
+		<constructor-arg value="3"/>
+	</bean>
+	<bean id="p03" class="springweb.a02_di_exp.z01_vo.Product">
+		<constructor-arg value="오렌지"/>
+		<constructor-arg value="2000"/>
+		<constructor-arg value="5"/>
+	</bean>
+	<!-- 단위객체를 할당할 수 있는 메서드 list에 추가 처리. -->
+	<bean id="mart03" class="springweb.a02_di_exp.z01_vo.Mart3">
+		<constructor-arg value="즐거운 마트"/>
+		<property name="plist">
+			<!-- 객체형으로 할당되기 때문에.. ref라는 요소객체에 bean으로 참조 변수를 
+				속성으로 할당하여야 한다. -->
+			<list>
+				<ref bean="p01"/>
+				<ref bean="p02"/>
+				<ref bean="p03"/>
+			</list>
+		</property>
+	</bean>	
+	
+	<!-- 0212 과제
+	ex) 1:다 관계의 구조 class를 만들고, container에서 호출하여 처리 결과를 main()에서 출력하세요.
+	프로 야구 팀 단위 객체 VO 생성, list 3위 까지 성적으로 출력 처리.
+	
+	a02_di_assignment.xml 에서 수행.
+	 -->
+	
+	 
+	 <!--
+	 # 여러가지 구조체 선언과 할당 처리..
+	   -->
+	 <bean id="sensor1" class="springweb.a02_di_exp.z01_vo.Sensor">
+	 <!-- 
+	 # Properties타입의 데이터 할당..
+	 	1. key:value로 mapping되어 있기 때문에,
+	 	2. props
+	 		prop key value를 할당하여 처리한다.
+	  -->
+	 	<property name="addInfo">
+	 		<props>
+	 			<prop key="threshold">1500</prop>
+	 			<prop key="retry">3</prop>
+	 		</props>
+	 	</property>
+	 	<!-- 
+	 	# Set 객체의 데이터 할당 처리..
+	 	순서확보는 안되고, 중복 허용이 안됨.
+	 		set
+	 	 -->
+		<property name="agentCodes">
+			<set>
+				<value>200</value>
+				<value>300</value>
+			</set>
+		</property>	
+	 </bean>
+	 
+	 
+	 <!-- 2020/02/13  
+		# Map<key, 객체>
+		1. map을 사용하는 VO 객체 선언.
+			1) Map<key, valueObject>
+		2. container에서 위 Map 객체를 사용하는 VO에 대한 처리.
+			1) property: 사용할 메서드 지정. (setMethod 호출)
+			2) 속성 선언.
+				map
+					entry
+						key
+						value 형식으로 처리.
+		3. DL에서 호출하여 해당 내용 처리 확인.
+		
+	//setSensorMap(Map<String, Sensor> sensorMap)
+	//setConfig(Map<String, Integer> config)
+	-->	
+		<bean id="monitor" class="springweb.a02_di_exp.z01_vo.Monitor">
+			<property name="sensorMap">
+				<!--
+				// setSensorMap(Map<String, Sensor> sensorMap)
+				-->
+				<map>
+					<entry>
+						<key>
+							<!-- 할당할 String 데이터 할당 처리 -->
+							<value>앞문!!</value>
+						</key>
+						<!-- 객체의 참조 값을 bean 속성으로 할당 처리한다. 
+							 상단에 선언된 객체 sensor1을 참조값으로 할당
+						-->
+						<ref bean="sensor1"/>
+					</entry>
+					<!-- Map entry를 하나 더 할당. (다른형태로)
+					value="" : 일반 문자열이나 primitive 데이터를 할당
+					value-ref = "" : 객체를 할당할 때, 활용된다.
+					-->
+					<entry key="뒷문" value-ref="sensor1"/>
+				</map>
+			</property>
+			<property name="config">
+				<!-- 
+				setConfig(Map<String, Integer> config)
+								"간격", 1000 정수
+										ex) Integer i = 1000; 
+				-->
+				 <map>
+				 	<entry key="간격" value="1000"/>
+					<entry key="시간">
+						<value>2000</value>
+					</entry>
+				 </map>
+				
+				 
+			</property>
+		</bean>
+		<!-- 
+		ex) BookStore VO를 생성하고 
+			field로 서점명
+			Map<String, Integer> 안에 도서명, 가격
+			toString 출력 처리하도록 선언.
+			DI 에서 호출.
+			DL 에서 해당 bookStore 객체 호출과 출력 처리.
+			
+		-->
+		<bean id="bookStore01" class="springweb.a02_di_exp.z01_vo.BookStore">
+			<property name="bName" value="교보문고"/>
+			<property name="bookMap">
+				<map>
+					<entry key="데미안" value="13000"/>
+					<entry key="어린왕자" value="10000"/>
+					<entry key="자바의 정석" value="37000"/>
+				</map>
+			</property>
+		</bean>
+		 
+		 
+</beans> 

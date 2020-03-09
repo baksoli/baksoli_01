@@ -1,0 +1,167 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:task="http://www.springframework.org/schema/task"
+	xmlns:aop="http://www.springframework.org/schema/aop"
+	xmlns:context="http://www.springframework.org/schema/context"
+	xmlns:mvc="http://www.springframework.org/schema/mvc"
+	xmlns:p="http://www.springframework.org/schema/p"
+	xmlns:c="http://www.springframework.org/schema/c"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns:util="http://www.springframework.org/schema/util"
+	xmlns:websocket="http://www.springframework.org/schema/websocket"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans
+       http://www.springframework.org/schema/beans/spring-beans-4.0.xsd
+        http://www.springframework.org/schema/aop
+       http://www.springframework.org/schema/aop/spring-aop-4.0.xsd
+       http://www.springframework.org/schema/context
+       http://www.springframework.org/schema/context/spring-context-4.0.xsd
+  		http://www.springframework.org/schema/mvc
+		http://www.springframework.org/schema/mvc/spring-mvc-4.0.xsd     
+        http://www.springframework.org/schema/util
+       http://www.springframework.org/schema/util/spring-util-4.0.xsd
+   		http://www.springframework.org/schema/websocket
+		http://www.springframework.org/schema/websocket/spring-websocket.xsd
+       http://www.springframework.org/schema/task
+       http://www.springframework.org/schema/task/spring-task.xsd">
+	<!-- 
+	# annotation 통한 java 소스코드 내에서 autowiring
+	1. 의존관계는 xml을 통해서 설정할 수 있다.
+	2. java class를 통해서, 의존관계 바로 설정하여 처리할 수 있다.
+		1) @Autowired를 선언.
+		2) private 자동 등록할 객체 참조변수 
+		ex) controller 단에서 선언.
+			@Autowired
+			private BoardService service;
+			컨테이너 내용에 BoardService가 선언되어 있으면,
+			객체가 생성 되면, Controller에서 해당 autowire가 
+			선언된 객체가 할당이 된다.
+			service 참조변수에 객체가 자동으로 할당되어 처리된다.
+			접근제어자의 범위를 벗어난다.
+	3. container 환경 구성.
+		1) 특정 패키지 기준으로 객체가 로딩되게 처리한다. 
+			[일반적인 조건, (필수조건은 아니다.)]
+			 ex) Controller, Service, Repository
+			 는 특정 package 와 @annotation으로 메모리에 로딩한다.
+		2) 컨테이너  @@.xml의 상단에 context:annotation-config 태그를 통해서 ,
+			객체 내에서 autowire를 선언할 수 있게끔 한다.
+		3) java 코드 내에서 annotation을 이용해서, 
+			autowiring 처리를 한다.
+	 -->   
+	 <!-- 
+	 	포함하는 bean객체 안에서 annotation으로
+	 	여러가지 기능처리가 필요할 때, 선언하여야 한다.
+	  -->
+	<context:annotation-config/>	
+	<bean class="springweb.a02_di_exp.z02_anno.A02_Service"/>
+	<bean id="ctrl01" class="springweb.a02_di_exp.z02_anno.A01_Controller"/>
+	
+	<!-- 
+	ex1) springweb.a02_di_exp.z02_anno. 패키지 안에
+		Woman Man 클래스를 선언하고, Man에 source code로 autowiring
+		처리하여, a06_DI_Exp.java에 선언하여 호출하게 하세요.
+	 -->
+	<bean class="springweb.a02_di_exp.z02_anno.Woman"
+		c:_0="김태희" c:_1="25" c:_2="서울 논현동"/>
+	<!-- 
+		qualifier는 container내에서 대상객체에 할당될 수 있는 type이
+		다수 일때, 특정한 객체가 할당할 수 있게 끔 구분하는 요소객체를 말한다.
+	 -->
+	<bean id="man01" class="springweb.a02_di_exp.z02_anno.Man"
+		c:name="조인성"/>
+	<!-- ↗ 다시 풀어보기 ** -->
+	<!-- 
+	4. autowired 설정 option 
+		1) qualifier : 컨테이너에서 같은 type의 여러 객체를 선언해 놓았을 때,
+			지정된 객체를 할당하기 위한 설정값.
+			- 컨테이너 안에서는 qualifier value값으로 특정한 값 선언.
+			- 소스 코드안에서는 annotation으로 qualifier("특정한 값") 옵션을 설정해 준다.
+	-->
+	<bean class="springweb.a02_di_exp.z02_anno.Woman"
+		c:name="김미숙" c:_1="55" c:_2="서울 방배동">
+	<qualifier value="ch01"/>
+	</bean>
+	<!-- 
+		2) Autowired(required = false)
+			bean 컨테이너 안에 객체가 생성되지 않더라도, 에러를 발생하지 않게
+			처리하는 옵션.
+			ex) Dao를 통해서 Database 접근시, 해당 데이터가 없어서,
+			 객체가 생성되지 않는 경우에도 bean container에서 발생하는 에러를
+			 방지하여 준다. (**)
+	 
+	 <bean class="springweb.a02_di_exp.z02_anno.Product"
+	 	c:_0="사과" c:_1="3000" c:_2="2" />-->
+	 <bean id="mart01" class="springweb.a02_di_exp.z02_anno.Mart"
+	 	c:_0="즐거운 " />
+	 	
+	 <!-- 
+	 ex2) springweb.a02_di_exp.z02_anno 하위에 BookStore와 Book를 만들고,
+	 	구매할 도서를 여러 객체 가운데 선택적으로 처리하게 하고,
+	 	도서가 할당되지 않더라도 에러가 발생하지 않게 BookStore에 선언해 놓으세요.
+	  -->
+	 <bean class="springweb.a02_di_exp.z02_anno.Book"
+	 	c:_0="데미안" c:_1="12000">
+	 	<qualifier value="ch001"></qualifier>
+	 	</bean>
+	 <bean class="springweb.a02_di_exp.z02_anno.Book"
+	 	c:_0="인간실격" c:_1="15000">
+	 	<qualifier value="ch002"></qualifier>
+	 	</bean>
+	 <bean class="springweb.a02_di_exp.z02_anno.Book"
+	 	c:_0="삼국지" c:_1="11000">
+	 	<qualifier value="ch003"></qualifier>
+	 	</bean>
+	 <bean id="bookStore01" class="springweb.a02_di_exp.z02_anno.BookStore"
+	 	c:_0="교보문고"/>
+	 	
+	 <!-- 
+	 5. j2ee의 autowired와 동일한 기능 처리.
+	 	1) Resource 처리.
+	 		- 속성을 name="참조변수값"
+	 			소스 자체에서 Resource annotation으로 설정하고,
+	 			속성값을 name에 DI에서 선언된 id값을 mapping 함으로써
+	 			qualifier와 같은 효과를 처리할 수 있다.
+	 			ex) @Resource(name="num1")
+	 				private Number num1;
+	 				
+	 				bean id="num1" class="@@.@@" 
+		2) 실행 예제
+			- 대상 객체 선언.
+			- 호출할 객체 선언 처리.
+			- xml 선언 처리.
+			
+	  -->
+	<bean id="num1" class="springweb.a02_di_exp.z02_anno.Number"
+		p:number="10"/>
+	<bean id="num2" class="springweb.a02_di_exp.z02_anno.Number"
+		p:number="20"/>
+	<bean id="homectrl" class="springweb.a02_di_exp.z02_anno.HomeController"/>
+	
+	<!-- 연습문제 겸 과제
+	ex) 숫자를 할당할 수 있는 Bean 객체 선언.
+		두개의 값을 받을 수 있는 Calculator객체
+		메서드 plus(), minus() 를 통해서 +, - 연산과 결과값 출력 처리.
+	 -->
+	<bean id="num3" class="springweb.a02_di_exp.z02_anno.Number"
+		p:number="13"/>
+	<bean id="num4" class="springweb.a02_di_exp.z02_anno.Number"
+		p:number="11"/>
+		
+	<bean id="calc01" class="springweb.a02_di_exp.z02_anno.Calculator"/>
+
+	<!-- 
+	ex) Coffee (커피명, 가격, 갯수)
+		CoffeeShop 해당 객체를 Resource로 처리하여,
+		주문된 커피를 담아서, orderedList()를 통해서
+		주문된 커피를 출력처리하자.
+	
+	 -->
+	 
+	 <bean id="coffee1" class="springweb.a02_di_exp.z02_anno.Coffee"
+	 	c:_0="아메리카노" c:_1="3000" c:_2="6"/>
+	 <bean id="coffee2" class="springweb.a02_di_exp.z02_anno.Coffee"
+	 	c:_0="라떼" c:_1="3500" c:_2="3"/>
+	 <bean id="cafe1" class="springweb.a02_di_exp.z02_anno.CoffeeShop"
+	 	c:_0="별다방"/>
+
+	
+</beans> 

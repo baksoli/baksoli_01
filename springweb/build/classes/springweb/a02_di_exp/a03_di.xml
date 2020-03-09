@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:task="http://www.springframework.org/schema/task"
+	xmlns:aop="http://www.springframework.org/schema/aop"
+	xmlns:context="http://www.springframework.org/schema/context"
+	xmlns:mvc="http://www.springframework.org/schema/mvc"
+	xmlns:p="http://www.springframework.org/schema/p"
+	xmlns:c="http://www.springframework.org/schema/c"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns:util="http://www.springframework.org/schema/util"
+	xmlns:websocket="http://www.springframework.org/schema/websocket"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans
+       http://www.springframework.org/schema/beans/spring-beans-4.0.xsd
+        http://www.springframework.org/schema/aop
+       http://www.springframework.org/schema/aop/spring-aop-4.0.xsd
+       http://www.springframework.org/schema/context
+       http://www.springframework.org/schema/context/spring-context-4.0.xsd
+  		http://www.springframework.org/schema/mvc
+		http://www.springframework.org/schema/mvc/spring-mvc-4.0.xsd     
+        http://www.springframework.org/schema/util
+       http://www.springframework.org/schema/util/spring-util-4.0.xsd
+   		http://www.springframework.org/schema/websocket
+		http://www.springframework.org/schema/websocket/spring-websocket.xsd
+       http://www.springframework.org/schema/task
+       http://www.springframework.org/schema/task/spring-task.xsd">
+	   
+	   <!-- 
+	   # 간편한 namespace 활용.
+	   1. xmlns:p (p태그를이용해서)
+	   		p: property명 = 데이터할당.
+	   		p:property명_ref=객체참조
+	   2. xmlns:c
+	   		c:생성자 매개변수 = 데이터 할당.
+	   		c:_0=데이터할당.
+	   		c:_1=데이터할당.
+	   		c:_2=데이터할당.
+	   		c:생성자매개변수_ref=객체참조
+	   -->
+	   <!--  public Person(String name, int age, String loc)  -->
+	   <!--  # 생성자 처리 : 매개변수의 이름으로  -->
+	   <bean id="p01" class="springweb.a02_di_exp.z01_vo.Person"
+			 c:name="홍길동" c:age="25" c:loc="서울 잠원동"/>
+	   <!-- # 생성자 처리 : 순서 index로  -->
+	   <bean id="p02" class="springweb.a02_di_exp.z01_vo.Person"
+	   		c:_0="김정희" c:_1="28" c:_2="서울 방배동"
+	   />
+	   <!--  # property로 할당 처리. -->
+		<bean id="w01" class="springweb.a02_di_exp.z01_vo.Woman"
+		p:name="김마리" p:age="27" p:loc="서울 당산"/>
+		<bean id="m01" class="springweb.a02_di_exp.z01_vo.Man"
+		c:name="김철수" p:woman-ref="w01"	/>
+</beans> 

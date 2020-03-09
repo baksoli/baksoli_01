@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:task="http://www.springframework.org/schema/task"
+	xmlns:aop="http://www.springframework.org/schema/aop"
+	xmlns:context="http://www.springframework.org/schema/context"
+	xmlns:mvc="http://www.springframework.org/schema/mvc"
+	xmlns:p="http://www.springframework.org/schema/p"
+	xmlns:c="http://www.springframework.org/schema/c"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns:util="http://www.springframework.org/schema/util"
+	xmlns:websocket="http://www.springframework.org/schema/websocket"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans
+       http://www.springframework.org/schema/beans/spring-beans-4.0.xsd
+        http://www.springframework.org/schema/aop
+       http://www.springframework.org/schema/aop/spring-aop-4.0.xsd
+       http://www.springframework.org/schema/context
+       http://www.springframework.org/schema/context/spring-context-4.0.xsd
+  		http://www.springframework.org/schema/mvc
+		http://www.springframework.org/schema/mvc/spring-mvc-4.0.xsd     
+        http://www.springframework.org/schema/util
+       http://www.springframework.org/schema/util/spring-util-4.0.xsd
+   		http://www.springframework.org/schema/websocket
+		http://www.springframework.org/schema/websocket/spring-websocket.xsd
+       http://www.springframework.org/schema/task
+       http://www.springframework.org/schema/task/spring-task.xsd">
+	   
+	<!-- 0212 과제
+	ex) 1:다 관계의 구조 class를 만들고, container에서 호출하여 처리 결과를 main()에서 출력하세요.
+	프로 야구 팀 단위 객체 VO 생성, list 3위 까지 성적으로 출력 처리.
+	-->
+	  
+	 <bean id="baseTeam01" class="springweb.a02_di_exp.z01_vo.Team">
+	 	<constructor-arg value="두산"/>
+	 	<constructor-arg value="144"/>
+	 	<constructor-arg value="0.646"/>
+	 </bean>
+	 <bean id="baseTeam02" class="springweb.a02_di_exp.z01_vo.Team">
+	 	<constructor-arg value="SK"/>
+	 	<constructor-arg value="144"/>
+	 	<constructor-arg value="0.546"/>
+	 </bean>
+	 <bean id="baseTeam03" class="springweb.a02_di_exp.z01_vo.Team">
+	 	<constructor-arg value="한화"/>
+	 	<constructor-arg value="144"/>
+	 	<constructor-arg value="0.535"/>
+	 </bean>
+	 <bean id="proTeam01" class="springweb.a02_di_exp.z01_vo.Baseball">
+	 	<constructor-arg value="한국"/>
+	 	<property name="plist">
+	 		<list>
+	 			<ref bean="baseTeam01"/>
+	 			<ref bean="baseTeam02"/>
+	 			<ref bean="baseTeam03"/>
+	 		</list>
+	 	</property>
+	 </bean>
+	 
+	
+</beans> 

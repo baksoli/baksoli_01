@@ -1,0 +1,67 @@
+1. Dynamic WebProject에서 스프링 개발환경으로 설정하는 
+	핵심 front-controller인 dispatcher-servlet의 설정
+	방법을 기술하세요
+	
+	: 1.xml 파일로 만들어진다.
+		+ web.xml 파일에 dispatcher-servlet을 MVC pattern
+		의 controller 등록과 동일하게 처리한다.
+	  2.선언 xml로 사용할 tag와 해당 tag의 속성을 정의한다.
+	  	+ dispatcher-servlet.xml
+	  	에 사용하게 될 bean 객체를 등록한다.
+	  3.bean 태그를 선언한다.
+	  
+	
+	
+2. http://localhost:7080/springweb/call.do를 통해서
+	초기 화면인  "안녕하세요"를 문자열로 화면에 출력한다.
+	web.xml
+	dispatcher-servlet.xml
+	controller
+	jsp 
+	단을 구성하고, 해당 구성에서 위 url 기준으로 처리되는 프로세서를
+	기술하세요.
+	
+	: view h01_homework.jsp
+	controller Java REsources.src.springweb.a01_start.H01_HWController.java
+	dispatcher-servlet.xml
+	
+	1. controller 클래스 생성(H01_HWController.java)
+	2. annotation 선언, url mapping 주소 추가메서드로 선언
+		+ @RequestMapping("/call.do")
+		public String call(Model d){
+			return "View단 jsp를 등록"
+		}
+	
+	3. jsp(view단) 호출(h01_homework.jsp)
+	 - controller 마지막 return 으로 선언된 jsp파일 해당 위치로 생성
+	 - jsp파일, controller 에서 보낸 모델 el태그로 선언. ${call}
+	4. dispatcher-servlet.xml 에 controller를 Bean클래스에 등록.
+	5. 서버 start(or restart), url(http://localhost:7080/springweb/call.do) 호출
+	
+	
+	
+ 3. container역할을 하는 xml에서 1:1 객체 연관관계 설정을 예제로
+ 	만들 내용을 간단하게 객체 관점에서 메모리 로딩 내용을 기술하세요.
+ 	
+ 	: 1. 호출될 class 선언, 선언된 class를 호출할 class 선언.
+ 	  2. <property name="호출될 class name" ref="호출될 클래스 선언 id"/>
+ 	
+ 4. Shopping VO클래스와 Product VO클래스를 만들어 상품을 쇼핑카트에
+ 	담는 1:다 관계의 처리를 DI를 통해서 생성하고, 쇼핑카트에 담긴 물품 
+ 	리스트를 화면에 출력 하세요.(namespace 처리)
+
+	: vo(Shopping.java, ShoppingProduct.java)
+	  A05_DI_Exp_homework, a05_di_homework.xml 파일 참고
+ 	
+ 	
+ 	
+ 	
+ 	
+ 	
+ 	
+ 	
+ 	 
+	
+	
+	
+	

@@ -1,0 +1,128 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:task="http://www.springframework.org/schema/task"
+	xmlns:aop="http://www.springframework.org/schema/aop"
+	xmlns:context="http://www.springframework.org/schema/context"
+	xmlns:mvc="http://www.springframework.org/schema/mvc"
+	xmlns:p="http://www.springframework.org/schema/p"
+	xmlns:c="http://www.springframework.org/schema/c"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns:util="http://www.springframework.org/schema/util"
+	xmlns:websocket="http://www.springframework.org/schema/websocket"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans
+       http://www.springframework.org/schema/beans/spring-beans-4.0.xsd
+        http://www.springframework.org/schema/aop
+       http://www.springframework.org/schema/aop/spring-aop-4.0.xsd
+       http://www.springframework.org/schema/context
+       http://www.springframework.org/schema/context/spring-context-4.0.xsd
+  		http://www.springframework.org/schema/mvc
+		http://www.springframework.org/schema/mvc/spring-mvc-4.0.xsd     
+        http://www.springframework.org/schema/util
+       http://www.springframework.org/schema/util/spring-util-4.0.xsd
+   		http://www.springframework.org/schema/websocket
+		http://www.springframework.org/schema/websocket/spring-websocket.xsd
+       http://www.springframework.org/schema/task
+       http://www.springframework.org/schema/task/spring-task.xsd">
+	   
+	<!-- 
+	# container에서 객체 생성과 메서드 활용 방법.
+	1. 객체 생성.
+	Person p01 = new Person();
+	-->
+	<bean id="p01" class="springweb.a02_di_exp.z01_vo.Person"/> 
+	<!-- 
+	2. 객체 생성과 메서드 사용.
+	Person p02 = new Person();
+	p02.setName("홍길동");
+	p02.setAge(25);
+	p02.setLoc("서울신림동");
+		1) 메서드 사용
+			property name = "set을 뺀 메서드명 - property"
+			value = "할당할 데이터"
+	-->
+	<bean id="p02" class="springweb.a02_di_exp.z01_vo.Person">
+		<property name="name" value="홍길동"/>
+		<property name="age" value="25"/>
+		<property name="loc" value="서울신림동"/>
+	</bean> 
+	 <!-- 
+	 ex) 프리미어/프로야구 Team 팀이름 승 무 패 속성..
+	 	1. 클래스 선언.
+	 	2. bean 객체로 해당 set메소드로 데이터 할당.
+	  -->
+	<bean id="pro" class="springweb.a02_di_exp.z01_vo.proTeam">
+		<property name="teamName" value="한화"/>
+		<property name="win" value="4"/>
+		<property name="loose" value="5"/>
+		<property name="same" value="4"/>
+		<property name="state" value="1"/>
+	</bean>
+	
+	<!-- 
+	# 생성자를 통한 객체 생성과 활용
+	Person p03 = new Person("이희정",25,"경기 수원");
+	
+	1. 생성자 처리.
+		constructor-arg
+		1) value를 통해서 해당 데이터 할당한다.
+		2) 순서로 생성자를 선언하여 데이터를 처리한다.
+	--> 
+	<bean id="p03" class="springweb.a02_di_exp.z01_vo.Person">
+		<constructor-arg value="이희정"/>
+		<constructor-arg value="25"/>
+		<constructor-arg value="경기 수원"/>
+	</bean>
+	
+	<!-- 
+	# class의 1:1 관계 설정.
+	1. 호출될 class 선언.(VO)
+	2. 선언된 class를 호출할 class 선언(VO)
+		1) 생성자나, 메서드를 통해서 해당 호출될 객체의 생성과 
+			할당 처리.
+			ex) private Woman woman
+				public void setWoman(Woman w){
+					this.woman = w;
+				}  
+	3. DI에서 위 클래스 객체 생성할 수 있게끔, xml로 선언.
+		1) property로 할당할 경우..
+			name="프로퍼티명" ref="객체참조명"
+	4. 컨테이너 IOC에서 호출과 활용처리.
+	 -->
+	<bean id="woman01" class="springweb.a02_di_exp.z01_vo.Woman">
+		<constructor-arg value="이미나"/>
+		<constructor-arg value="28"/>
+		<constructor-arg value="서울 신림동"/>
+	</bean>
+	<!-- 
+	Woman woman01 = new Woman("이미나",28,"서울 신림동");
+	Man man01 = new Man("김호철");
+	man01.setWoman(woman01);
+	# di의 bean는 참조객체를 할 때는 ref를 속성으로 사용하여,
+	참조 변수를 할당한다.
+	 -->
+	<bean id="man01" class="springweb.a02_di_exp.z01_vo.Man">
+		<constructor-arg value="김호철"/>
+		<property name="woman" ref="woman01"></property>
+	</bean>
+	<!-- 
+	ex) Product 물건명 가격 갯수
+		Mart 마트명 Product
+		1:1관계로 설정하여 
+			Mart에서 buy메서드를 통해서.
+			@@@ 마트에서 물건 @@을 @@개 @@원 구매하였다.
+	 -->
+	 
+	<bean id="product01" class="springweb.a02_di_exp.z01_vo.Product">
+		<constructor-arg value="우유"/>
+		<constructor-arg value="2100"/>
+		<constructor-arg value="2"/>
+	</bean>
+	<bean id="mart01" class="springweb.a02_di_exp.z01_vo.Mart">
+		<constructor-arg value="코리아"/>
+		<property name="product" ref="product01"></property>	
+	</bean>
+	
+</beans> 
+
+
+

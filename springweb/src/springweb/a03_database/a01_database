@@ -1,0 +1,91 @@
+# spring에서 데이터베이스 연동처리
+1. 기본 설정관련.(환경 설정을 위해 필요한 파일 및 설명)
+	1) db 연결을 위한 jdbc driver 설정.
+		cf) jdbc : java database connection
+			java 프로그램으로 db 서버를 연결하기 위한 공통 모듈.
+			web에서 lib로 추가.
+				springweb\WebContent\WEB-INF\lib\ojdbc6.jar
+			
+	2) mybatis 연결 모듈(framework).jar
+			springweb\WebContent\WEB-INF\lib\
+				mybatis-spring-1.0.2.jar,
+				mybatis-3.0.6.jar,
+				commons-dbcp-1.2.2.jar 
+				설정
+				
+	3) 컨테이너(dispatcher-servlet.xml)에서 (해야할 3가지)
+		- dbcp(database connection pool)로 연결 정보와
+			jdbc driver 를 통해 db서버에 연동하도록 한다.
+			ip, port, sid, 계정, 비밀번호 정보를 입력필요. (resource/properties/info.file)
+		- mybatis 연결 정보 설정.
+			dbcp 와 연결
+			mybatis의 연결을 위한 공통 설정 파일 선언.(mybatis.Srping.xml)
+		- mybatix와 연결시, interface를 통해 mybatis가 
+			실제 객체를 만들어 주는데, 이 dao interface 
+			폴더 위치를 선언.
+	
+		ex) EmpDao dao = new RealEmpDao();
+					RealEmpDao ==> mybatis를 통해서 만들어진 실제 데이터 처리
+						결과를 포함하는 실제 객체가 인터페이스명으로 할당되어
+						service단에서 사용될 수 있다.
+				
+			
+	4) mybatis의 공통 xml 설정파일 (mybatis.Srping.xml파일)
+		- 사용할 VO, DTO 객체를 alias 이름으로 선언.
+		- 각 DAO 클래스 단위와 연결하는 XXXMapper.xml를 선언.
+			ex) XXXMapper.xml는 BoardDao(인터페이스)와 BoardMapper.xml 연동 
+	5) XXXMapper.xml의 선언.
+		- 조회, 수정, 삭제 처리하는 sql을 각 기능단위로 선언하는 곳을 말한다.
+		
+		
+2. 프로그래밍 순서.
+	1) sql 작성.
+		결과값으로 처리할 vo 의 내용 확인
+		select * from emp;
+	2) VO 작성(조회시 결과 단위데이터를 저장할 객체)
+	3) DAO 인터페이스 구성.
+		springweb\a03_database\repository 에서 구성.
+		
+	4) 기능 메서드 선언.
+		sql을 통해서 나타나는 데이터를 
+		return할 객체, 조회조건 VO
+	5) 공통 mybatis.Spring.xml
+		- 사용할 VO를 alias로 선언.
+		- XXXMapper.xml
+	6) XXXMapper.xml
+		- 결과 객체 선언. resultMap
+		- sql문 처리할 요소 객체 선언.
+			-id, 매개변수, return값 선언.
+		1. java의 Dao인터페이스에 상속한 실제 객체를 생성해주는 역할을 하는 것이
+		XXXMapper.xml 역할이다.
+		2. sql의 결과 데이터 ==> 객체로 할당 처리.
+		3. DAO인터페이스가 특정한 규칙에 의해서 XXXMapper.xml의 
+			속성과 연결처리.
+		
+jdbc 사용을 위한 lib 3가지
+-commons-dbcp-1.2.2.jar
+-mybatis-3.0.6.jar
+-ojdbc6.jar
+
+
+
+ex) 연습문제
+select * from dept
+기준으로 부서정보 출력 controller를 통해 처리하자.
+A02_DeptController.java					
+A02_DeptSerivce.java					
+DeptDao.java					
+DeptMapper.xml
+
+
+# 데이터 등록 처리 process
+1. insert sql문 작성과 test
+2. 등록화면 구성
+	초기 화면 로딩 controller
+	등록 처리 controller
+3. dao 메서드 구성.
+	public void insertEmp(Emp ins);		
+4. XXXMapper.xml을 통해서 등록 처리 구성.
+5. service, controller 연동 처리.
+6. 테스트 확인.
+

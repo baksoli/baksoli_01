@@ -1,0 +1,113 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<web-app xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns="http://java.sun.com/xml/ns/javaee" xsi:schemaLocation="http://java.sun.com/xml/ns/javaee http://java.sun.com/xml/ns/javaee/web-app_3_0.xsd" id="WebApp_ID" version="3.0">
+  <display-name>springweb</display-name>
+  <!-- 
+  # spring 기본 환경 설정
+  Dunamic web project ==> springframework 환경설정
+  1. 요청 처리 프로세스..
+  	 1) url 호출.
+  	 	http://localhost:7080/springweb/start.do
+  	 	
+  	 2) web.xml(자바단 웹서비스의 핵심)
+  	 	front controller 정의 : dispatcher-servlet 호출
+  	 3) 설정 default xml(컨테이너)
+  	 	dispatcher-servlet.xml
+  	 	- controller 등록
+  	 	- 사용할 객체 등록 메모리 로딩
+  	 4) controller 호출
+  	 	- 위에 정의된 url 패턴과 mapping 되는 메서드 호출
+  		/start.do
+  		- 모델 설정
+  		- jsp 호출
+  	 5) @@.jsp
+  	 	- 화면 구성
+  	 6) client에 화면 전달
+  2. 환경 구축
+  	 1) 필요로 하는 framework file 복사
+  	    WebContent\WEB-INF\lib
+  	 2) web.xml에서 공통
+  	    - front controller인 dispatcher-servlet 선언
+  	      - 객체 선언.
+  	      - container xml 파일 선언
+  	    - 요청에 대한 encoding filter 선언
+  	    
+   -->
+   
+   <!-- 
+   1. front controller 선언 규칙.
+    - url pattern
+    	ex) http://localhost:7080/springweb/start.do
+  	 	*.do 때만 스프링 프레임웍을 쓰게 처리한다.
+    - 사용하게될 servlet 이름 지정.
+    - servlet 이름과 mapping 실제 framework의 클래스 선언
+   2. dispatcher로 선언하면, dispatcher-servlet.xml로 
+   		WEB-INF 폴더 하위에 컨테이너로 인식한다.
+    -->
+   <servlet>
+   	<servlet-name>dispatcher</servlet-name>
+   	<servlet-class>org.springframework.web.servlet.DispatcherServlet</servlet-class>
+   	<!-- <init-param></init-param> 
+   	1. 사용정의 위치가 있는 container 정보를 설정.
+   	2. 설정하지 않으면 servlet-name을 기준으로 
+   		WEB-INF 하위에 @@@-servlet.xml로 만들어진다.
+   	-->
+   </servlet>
+   <servlet-mapping>
+   <!-- *.do 때만 스프링 프레임웍을 쓰게 처리한다.(*.do로 끝나는 거일때 dispatcher(front controller) 를 실행한다) -->
+   	<servlet-name>dispatcher</servlet-name>
+   	<url-pattern>*.do</url-pattern>
+   </servlet-mapping>
+   <!-- 
+   # front controller의 상세 옵션.
+   1. url 패턴 변경 ex) *.do2 
+   2. 컨테이너 설정 위치의 변경.
+   	1) init-param
+   		param-name : contextConfigLocation
+   		param-value : WebContent기준으로 다른 위치에 container 
+   			xml 파일을 설정할 수 있다.
+   			
+    -->
+   <servlet>
+   	<servlet-name>dispatcher2</servlet-name>
+   	<servlet-class>org.springframework.web.servlet.DispatcherServlet</servlet-class>
+   	<!-- # 컨테이너 설정 위치 변경 -->
+   	<init-param>
+   	 	<param-name>contextConfigLocation</param-name>
+   	 	<param-value>/WEB-INF/conf/container.xml</param-value>
+   	</init-param>
+   	
+   </servlet>
+   <servlet-mapping>
+   	<servlet-name>dispatcher2</servlet-name>
+   	<url-pattern>*.do2</url-pattern>
+   </servlet-mapping>
+   <!-- 
+   	요청값에 대한 한글 처리 filter 선언
+    1. url 패턴
+    2. filter이름
+    3. filter이름과 mapping 스프링 프레임웍 클래스
+    4. param로 어떤 encoding을 선언하는지
+    -->
+	<filter>
+		<filter-name>encodingFilter</filter-name>
+		<filter-class>org.springframework.web.filter.CharacterEncodingFilter</filter-class>
+		<init-param>
+			<param-name>encoding</param-name>
+			<param-value>utf-8</param-value>
+		</init-param>
+	</filter>
+  	<filter-mapping>
+  		<filter-name>encodingFilter</filter-name>
+  		<url-pattern>/*</url-pattern>
+  	</filter-mapping>
+   
+   
+  <welcome-file-list>
+    <welcome-file>index.html</welcome-file>
+    <welcome-file>index.htm</welcome-file>
+    <welcome-file>index.jsp</welcome-file>
+    <welcome-file>default.html</welcome-file>
+    <welcome-file>default.htm</welcome-file>
+    <welcome-file>default.jsp</welcome-file>
+  </welcome-file-list>
+</web-app>

@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE configuration PUBLIC "-//mybatis.org//DTD Config 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-config.dtd">
+<configuration>
+	<!--  1. VO를 alias 
+			vo클래스를 alias로 선언하면, 이 별칭으로 xxxMapper.xml에서
+			간단한 이름으로 사용할 수 있다.
+	-->
+	<typeAliases>
+		<typeAlias alias="emp" type="springweb.z01_vo.Emp"/>
+		<typeAlias alias="dept" type="springweb.z01_vo.Dept"/>
+	</typeAliases>
+	<!--  2. 실제 sql을 객체로 할당할 XXXMapper.xml 선언. -->
+	<mappers>
+		<mapper resource="resource/EmpMapper.xml"/>
+		<mapper resource="resource/DeptMapper.xml"/>
+	</mappers>
+</configuration>
