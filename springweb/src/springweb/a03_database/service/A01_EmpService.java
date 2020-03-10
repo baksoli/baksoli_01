@@ -17,4 +17,12 @@ public class A01_EmpService {
 	public ArrayList<Emp> emplist(Emp sch){
 		return dao.emplist(sch);
 	}
+	
+	public void insertEmp(Emp ins) {
+		dao.insertEmp(ins);
+	}
+	
+	public Emp empOne(int empno) {
+		return dao.empOne(empno);
+	}
 }

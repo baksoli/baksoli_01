@@ -16,6 +16,7 @@
 		<if test="loc!=null">
 		AND loc like '%'||#{loc}||'%'
 		</if>
+		ORDER BY DEPTNO DESC
 	</select>
 	<!--
 	( parameterType="dept" 매개변수 처리하는 거 )
@@ -29,5 +30,15 @@
 	 		AND dname '%'||?||'%'
 	 		pstmt.setString(1,sch.getDname())와 동일한 처리.
 	-->
+	
+	<insert id="insertDept" parameterType="dept">
+		INSERT INTO dept01 values(dept_seq.nextval, #{dname}, #{loc})
+	</insert>
+	
+	<select id="detailDept" resultType="dept" parameterType="int">
+		SELECT *
+		FROM dept01
+		WHERE deptno = #{deptno}	
+	</select>
 	
 </mapper>

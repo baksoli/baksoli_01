@@ -5,6 +5,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 
 import springweb.a03_database.service.A02_DeptSerivce;
 import springweb.z01_vo.Dept;
@@ -29,10 +30,22 @@ public class A02_DeptController {
 		md.addAttribute("dlist",service.dlist(sch));
 		return "WEB-INF\\view\\a03_db\\a02_deptList.jsp";
 	}
-	
 	@RequestMapping("/deptInsForm.do")
 	public String deptInsForm(){
-		System.out.println("부서 추가");
+		System.out.println("## 부서 추가 화면 로딩 ##");
 		return "WEB-INF\\view\\a03_db\\a02_deptInsert.jsp";
+	}
+	@RequestMapping("/deptInsert.do")
+	public String deptInsert(Dept ins) {
+		System.out.println("## 부서 추가 ##");
+		service.insertDept(ins);
+		return "redirect:/deptlist.do";
+	}
+	@RequestMapping("/deptDetail.do")
+	public String deptDetail(@RequestParam("deptno") int deptno, Model d){
+		System.out.println("## 부서 상세 화면 ##");
+		System.out.println("넘겨온 부서 번호 :: "+deptno);
+		d.addAttribute("dept", service.detailDept(deptno));
+		return "WEB-INF\\view\\a03_db\\a02_deptDetail.jsp";
 	}
 }

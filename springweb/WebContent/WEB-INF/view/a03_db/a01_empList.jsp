@@ -22,6 +22,20 @@
 			// 등록화면 이동 처리.
 			$(location).attr("href", "${path}/empInsForm.do");
 		});
+		
+		$(".data").hover(function(){
+			$(this).css("background","pink");
+		}, function(){
+			$(this).css("background","");
+		});
+		
+		$(".data").dblclick(function(){
+			var empno = $(this).attr("id");
+			alert("확인할 empno :: "+empno);
+			// 상세 처리할 controller 호출.
+			$(location).attr("href","${path}/empDetail.do?empno="+empno);
+		});
+		
 	});
 </script>
 </head>
@@ -41,12 +55,14 @@
 			<th>사원명</th>
 			<th>직책</th>
 			<th>관리자번호</th>
+			<th>입사일</th>
 			<th>급여</th>
 			<th>보너스</th>
 			<th>부서번호</th>
 		</tr>
 		<c:forEach var="emp" items="${emplist }">
-			<tr>
+			<!-- id를 매개변수로 상세화면에 전달 -->
+			<tr class="data" id="${emp.empno }">
 				<td>${emp.empno }</td>
 				<td>${emp.ename }</td>
 				<td>${emp.job }</td>

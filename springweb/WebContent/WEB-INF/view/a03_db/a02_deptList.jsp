@@ -20,6 +20,17 @@
 		$("#regBtn").click(function(){
 			$(location).attr("href","${path}/deptInsForm.do");
 		});
+		$(".data").hover(function(){
+			$(this).css("background", "pink");
+		},function(){
+			$(this).css("background","");
+		});
+		
+		$(".data").dblclick(function(){
+			var deptno = $(this).attr("id");
+			alert("선택한 부서 번호 :: "+deptno);
+			$(location).attr("href","${path}/deptDetail.do?deptno="+deptno);
+		})
 	});
 </script>
 </head>
@@ -42,7 +53,7 @@
 			<th>부서위치</th>
 		</tr>
 		<c:forEach var="dept" items="${dlist }">
-			<tr>
+			<tr class="data" id="${dept.deptno }">
 				<td>${dept.deptno }</td>
 				<td>${dept.dname }</td>
 				<td>${dept.loc }</td>

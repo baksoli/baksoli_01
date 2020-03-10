@@ -31,11 +31,36 @@
 		<if test="job!=null">
 		AND job like '%'||#{job}||'%'
 		</if>
+		ORDER BY empno desc
 	</select>
 	<!-- null이 아닐 때, keyword검색 처리..
 	ename!=null ==> sch.getEname()!=null 처리,
 	job!=null ==> sch.getJob()!=null 처리 
-	
 	-->
+	<!--
+	void insertEmp(Emp ins)
+	1. return 값은 없기 때문에 생략.
+	2. 입력값은 Emp 객체
+		parameterType="emp"
+		springweb.z01_vo.Emp 라고 써도 되지만, mybatis.Spring에 alias로 emp를 등록해놨으므로
+		"emp"라고 지정할 수 있다.
+	3. 정의할 sql과 ognl
+	4. emp의 객체를 메서드로 할당처리한다.
+	mybatis #{ename}
+	-->
+	<insert id="insertEmp" parameterType="emp">
+		INSERT INTO emp01 values(emp_seq.nextval, 
+		#{ename},#{job},#{mgr},sysdate, #{sal},#{comm},#{deptno});
+		
+	</insert>
+	
+	<select id="empOne" resultType="emp" parameterType="int">
+		SELECT *
+		FROM emp01
+		WHERE empno = #{empno}
+	</select>
+
+
+
 
 </mapper>	

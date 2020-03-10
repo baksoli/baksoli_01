@@ -5,6 +5,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 
 import springweb.a03_database.service.A01_EmpService;
 import springweb.z01_vo.Emp;
@@ -29,7 +30,7 @@ public class A01_EmpController {
 	
 	@RequestMapping("/empInsForm.do")
 	public String empInsForm() {
-		
+		System.out.println("#등록화면 로딩#");
 		return "WEB-INF\\view\\a03_db\\a01_empInsert.jsp";
 	}
 	
@@ -37,7 +38,26 @@ public class A01_EmpController {
 	// ex) 부서 정보 등록처리 화면 구성면 process 처리 하기! (과제)
 	@RequestMapping("/empInsert.do")
 	public String empInsert(Emp insert, Model d) {
+		System.out.println("#등록 처리 화면 로딩#");
 		System.out.println("등록명: "+insert.getEname());
-		return "WEB-INF\\view\\a03_db\\a01_empInsert.jsp";
+		System.out.println("직챙 : "+insert.getJob());
+		service.insertEmp(insert);
+		
+		// 처리 후, 전체 리스트 확인.
+		// controller단 호출. redirect:/emplist.do
+		return "redirect:/emplist.do";
 	}
+	// 상세 화면 처리 (수정/삭제 할 수 있는 interface 화면)
+	@RequestMapping("/empDetail.do")
+	public String empDetail(@RequestParam("empno") int empno, Model d) {
+		System.out.println("넘겨온 empno : "+empno);
+		d.addAttribute("emp", service.empOne(empno));
+		return "WEB-INF\\view\\a03_db\\a01_empDetail.jsp";
+	}
+	// 수정 처리
+	
+	// 삭제 처리
+	
+	
+	
 }

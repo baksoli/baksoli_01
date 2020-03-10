@@ -1,4 +1,25 @@
 # spring에서 데이터베이스 연동처리
+0. 프로그램과 DB 서버 접속 프로세스
+	1) DB 베이스 서버 구축.
+		- oracle 사이트에서 11g xe 서버 다운
+			접속을 하기 위해 ip, port, sid, 계정, 비밀번호
+			ip : tcp/ip 기반의 특정 위치 네트워크 접속
+			port : 서버의 특정 연동 통로 
+				ex) 웹서버 7080, 오라클 :1521, 메일서버, 파일서버..
+		- 계정에 포함된, 2차원 테이블 기반의 데이터를 저장, 수정, 삭제
+			로딩을 할 수 있다.
+	2) DB client 를 통해서 접속.
+		- cmd 창에서 sqlplus 를 통해 계정/비밀번호 이용하여 접속.
+		- eclipse에서 지원하는 plugin 프로그램(dbeaver)를 설치하여, 접속.
+			드라이브 관리(jdbc 드라이버)
+			접속 처리 (새 데이터베이스 연결) 연결 
+			DB 내용을 확인.
+	3) 프로그래밍(spring)을 접속.
+		- jdbc 드라이버를 통해 접속할 수 있다. 
+		springweb\WebContent\WEB-INF\lib 하위에 ojdbc6.jar
+	4) DB에 있는 데이터를 controller하는 실제 명령어 : sql
+		ex)  select * from emp;, insert into 데이블명 values(입력데이터);
+		
 1. 기본 설정관련.(환경 설정을 위해 필요한 파일 및 설명)
 	1) db 연결을 위한 jdbc driver 설정.
 		cf) jdbc : java database connection
@@ -19,8 +40,8 @@
 			ip, port, sid, 계정, 비밀번호 정보를 입력필요. (resource/properties/info.file)
 		- mybatis 연결 정보 설정.
 			dbcp 와 연결
-			mybatis의 연결을 위한 공통 설정 파일 선언.(mybatis.Srping.xml)
-		- mybatix와 연결시, interface를 통해 mybatis가 
+			mybatis의 연결을 위한 공통 설정 파일 선언.(mybatis.Spring.xml)
+		- mybatis와 연결시, interface를 통해 mybatis가 
 			실제 객체를 만들어 주는데, 이 dao interface 
 			폴더 위치를 선언.
 	
@@ -80,12 +101,52 @@ DeptMapper.xml
 
 # 데이터 등록 처리 process
 1. insert sql문 작성과 test
-2. 등록화면 구성
-	초기 화면 로딩 controller
-	등록 처리 controller
+2. 등록화면 구성 (UI 구성, 데이터를 서버에 전달)
+	초기 화면 로딩 controller : @RequestMapping("/empInsForm.do")
+	등록 처리 controller : @RequestMapping("/empInsert.do")
+		client 에서 데이터를 받은 VO 객체를 가지고 있는 controller
+		웹 서버에 데이터베이스에 할당할 데이터를 가지고 있는 상태.
+		
 3. dao 메서드 구성.
+	Emp 객체를 통해서 데이터를 웹 서버에 가지고 있는 상태를 (위에서 ok)
+	mybatis라는 framework를 통해서 DB 서버에 접속을 하여, (dispatcher-servlet에서 ok)
+	- 어떤 데이터, 어떤 모듈을 통해서 처리를 할지 지정.(ok)
+	sql문을 통해 데이터를 입력 처리한다.
+	1) dispatcher-servlet.xml 컨테이너에서 지정한
+	 	package(springweb.a03_database.repository)에
+		interface로 데이터 입력 객체, return할 형식을 선언.
+	2) dao 선언.
+	3) dao 안에 메서드 선언(입력, return 값 처리)
+	4) dao 메서드가 mybatis의 xml로 실제 객체가 만들어 질 수 있게끔
+		연동 규칙으로 xml을 선언 해준다.
+		
 	public void insertEmp(Emp ins);		
 4. XXXMapper.xml을 통해서 등록 처리 구성.
 5. service, controller 연동 처리.
 6. 테스트 확인.
+
+# 상세 화면 처리(수정/삭제할 수 있는 interface 화면)
+1. 상세화면 로딩..
+	1) 전체 list 화면에서 특정 데이터 클릭시, empno로
+		요청값을 넘겨주고, 상세화면 controller 호출. 
+	
+		sql 확인
+		select * 
+		from emp01
+		where empno=7955
+	2) 변경할 수 있는 화면으로 데이터 로딩 처리 구현.
+		- dao 처리.
+			메서드 empno 데이터가 정수가 입력이 되고, 단위 객체인 
+			Emp 객체가 return 되도록 처리.
+		- sql 이용해서 1개 단위 데이터를 가져오면서 로딩 처리
+		
+	3) 상세화면 로딩 후 , 
+	4) 수정 버튼 클릭시, 수정 process 처리
+	
+	5) 삭제 버튼 클릭시, 삭제 process 처리
+	
+	
+# 수정 처리
+
+# 삭제 처리
 

@@ -18,4 +18,12 @@ public class A02_DeptSerivce {
 	public ArrayList<Dept> dlist(Dept sch){
 		return dao.dlist(sch);
 	}
+	
+	public void insertDept(Dept ins) {
+		dao.insertDept(ins);
+	}
+	
+	public Dept detailDept(int deptno){
+		return dao.detailDept(deptno);
+	}
 }
