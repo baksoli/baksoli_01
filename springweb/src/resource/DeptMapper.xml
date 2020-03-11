@@ -41,4 +41,16 @@
 		WHERE deptno = #{deptno}	
 	</select>
 	
+	<update id="updateDept" parameterType="dept">
+		UPDATE dept01
+		SET dname = #{dname},
+			loc = #{loc}
+		WHERE deptno = #{deptno}
+	</update>
+	
+	<delete id="deleteDept" parameterType="int">
+		DELETE FROM dept01
+		WHERE deptno = #{deptno}
+	</delete>
+	
 </mapper>

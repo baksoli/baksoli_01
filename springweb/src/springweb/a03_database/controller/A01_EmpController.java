@@ -45,6 +45,8 @@ public class A01_EmpController {
 		
 		// 처리 후, 전체 리스트 확인.
 		// controller단 호출. redirect:/emplist.do
+		// forward : \컨트롤 - 요청값 포함하여 전달.
+		// redirect : \컨트롤 - 요청값 없이 전달.
 		return "redirect:/emplist.do";
 	}
 	// 상세 화면 처리 (수정/삭제 할 수 있는 interface 화면)
@@ -54,10 +56,24 @@ public class A01_EmpController {
 		d.addAttribute("emp", service.empOne(empno));
 		return "WEB-INF\\view\\a03_db\\a01_empDetail.jsp";
 	}
-	// 수정 처리
+	// 수정 처리 empUpdate.do
+	@RequestMapping("/empUpdate.do")
+	public String empUpdate(Emp upt) {
+		System.out.println("수정할 데이터의 key: "+upt.getEmpno());
+		System.out.println("수정할 데이터의 사원 명 : "+upt.getEname());
+		service.updateEmp(upt);
+		// 상세화면으로 다시 전송(empno 요청값을 전달)
+		// 수정된 내용을 empno값을 전달하면서 검색되도록 처리.
+		return "forward:/empDetail.do";
+	}
 	
-	// 삭제 처리
-	
+	// 삭제 처리 /empDelete.do
+	@RequestMapping("/empDelete.do")
+	public String empDelete(@RequestParam("empno") int empno) {
+		System.out.println("삭제할 데이터의 id :: "+empno);
+		service.deleteEmp(empno);
+		return "forward:/emplist.do";
+	}
 	
 	
 }

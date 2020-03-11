@@ -45,6 +45,11 @@ public interface EmpDao {
 	//3. 매개변수 : int
 	public Emp empOne(int empno);
 	
+	// 수정 처리 process 메서드, 
+	public void updateEmp(Emp upt);
+	
+	// 삭제 처리 process 메서드
+	public void deleteEmp(int empno);
 	
 	
 }

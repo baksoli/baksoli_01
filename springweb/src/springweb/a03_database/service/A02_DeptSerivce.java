@@ -23,7 +23,16 @@ public class A02_DeptSerivce {
 		dao.insertDept(ins);
 	}
 	
-	public Dept detailDept(int deptno){
+	public Dept detailDept(int deptno) {
 		return dao.detailDept(deptno);
 	}
+	
+	public void updateDept(Dept dept){
+		dao.updateDept(dept);
+	}
+	
+	public void deleteDept(int deptno){
+		dao.deleteDept(deptno);
+	}
+	
 }

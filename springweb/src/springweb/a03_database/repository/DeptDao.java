@@ -21,4 +21,7 @@ public interface DeptDao {
 	
 	public Dept detailDept(int deptno);
 	
+	public void updateDept(Dept dept);
+	
+	public void deleteDept(int deptno);
 }

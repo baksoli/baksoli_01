@@ -50,7 +50,7 @@
 	-->
 	<insert id="insertEmp" parameterType="emp">
 		INSERT INTO emp01 values(emp_seq.nextval, 
-		#{ename},#{job},#{mgr},sysdate, #{sal},#{comm},#{deptno});
+		#{ename},#{job},#{mgr},sysdate, #{sal},#{comm},#{deptno})
 		
 	</insert>
 	
@@ -60,7 +60,33 @@
 		WHERE empno = #{empno}
 	</select>
 
+	<!-- 
+		void updateEmp(Emp upt)
+		UPDATE EMP01 
+		SET ename='신길동(upt)',
+			job = '사원(upt)',
+			mgr = 7698,
+			sal = 3501,
+			comm = 111,
+			DEPTNO = 10
+		WHERE EMPNO =7369;
+	 -->
 
+	<update id="updateEmp" parameterType="emp">
+		UPDATE emp01
+		SET	ename=#{ename},
+			job =#{job},
+			mgr =#{mgr},
+			sal =#{sal},
+			comm =#{comm},
+			deptno =#{deptno}
+		WHERE empno = #{empno}
+	</update>
+
+<!-- public void deleteEmp(int empno -->
+	<delete id="deleteEmp" parameterType="int">
+		DELETE FROM EMP01 WHERE empno= #{empno}
+	</delete>
 
 
 </mapper>	

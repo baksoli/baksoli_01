@@ -40,8 +40,8 @@
 			ip, port, sid, 계정, 비밀번호 정보를 입력필요. (resource/properties/info.file)
 		- mybatis 연결 정보 설정.
 			dbcp 와 연결
-			mybatis의 연결을 위한 공통 설정 파일 선언.(mybatis.Spring.xml)
-		- mybatis와 연결시, interface를 통해 mybatis가 
+			mybatis의 연결을 위한 공통 설정 파일 선언.(mybatis.Srping.xml)
+		- mybatix와 연결시, interface를 통해 mybatis가 
 			실제 객체를 만들어 주는데, 이 dao interface 
 			폴더 위치를 선언.
 	
@@ -147,6 +147,26 @@ DeptMapper.xml
 	
 	
 # 수정 처리
-
+1. 수정할 sql을 작성과 test(DB client로 확인)
+2. 화면 user Interface에서 수정 버튼을 클릭 시, 수정할 데이터를 controller에 전달.
+	form, submit
+3. 요청하는 controller 구현하여, 매개변수로 수정데이터가 VO로 받아진 것을 확인.
+4. DAO단, 수정 처리하는 메서드 선언.
+	public void updateEmp(Emp upt);
+5. EmpMapper.xml 에서 수정 처리 메서드와 함께 선언할 xml 속성 작성
+	<update id="updateEmp" parameterType="emp">
+		수정 sql 처리.. 
+6. Dao ==> service ==> controller 순으로 처리
+7. controller에 수정 후, 처리 process 
+	1) 수정된 데이터 조회와, model로 넘겨 detail을 처리하게 한다.
+	
 # 삭제 처리
+1. 삭제할 sql 작성.
+2. 화면에 삭제버튼 클릭 시, controller 호출, 요청값 전달(empno).
+3. 삭제할 controller 작성. empno 값 호출 확인.
+4. 삭제 dao단 구현 public void deleteEmp(int empno);
+5. EmpMapper.xml 에서 삭제 요소 선언
+	<delete id="deleteEmp" parameterType="int">
+6. DAO ==> service ==> controller 순으로 처리
+7. controller 삭제 처리 후, list controller로 redirect 처리 
 

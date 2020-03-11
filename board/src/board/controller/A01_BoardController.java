@@ -1,4 +1,4 @@
-package board.controller;
+﻿package board.controller;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -57,14 +57,15 @@ public class A01_BoardController {
 
 	@RequestMapping(params="method=insert")
 	public String isnert(Board ins, BindingResult bindingResult) {
-		// 서비스 단에 등록 처리 프로세스 호출.
-		
 		new BoardInsertValidator().validate(ins, bindingResult);
 		
 		if(bindingResult.hasErrors()){
 			return "WEB-INF\\view\\a02_boardInsert.jsp";
 		}
 		
+		
+
+		// 서비스 단에 등록 처리 프로세스 호출.
 		service.insert(ins);
 		
 		// 등록 후 메인 화면(조회 controller) 이동.

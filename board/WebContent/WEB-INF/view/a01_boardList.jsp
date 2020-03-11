@@ -110,8 +110,8 @@ h2, th, td {
 					<td>${board.no }</td>
 					<td>${board.subject }</td>
 					<td>${board.writer }</td>
-					<td><fmt:formatDate value="${board.regdate }"/></td>
-					<td>${board.readcount }</td>
+					<td><fmt:formatDate value="${board.regdte }"/></td>
+					<td>${board.readcnt }</td>
 				</tr>
 			</c:forEach>
 		</table>

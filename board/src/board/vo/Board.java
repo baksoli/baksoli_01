@@ -13,70 +13,32 @@ public class Board {
 	private String email; // 이메일
 	/* no, refno, subject, writer, content, pass, email */
 	
-	private int readcount; //조회수
-	private Date regdate; // 등록일
-	private Date uptdate; // 수정일
-	
+	private int readcnt; //조회수
+	private Date regdte; // 등록일
+	private Date uptdte; // 수정일
 	public Board() {
 		super();
 		// TODO Auto-generated constructor stub
 	}
-	
-	public Board(int no, String subject, String writer, Date regdate, int readcount) {
+	public Board(int no, int refno, String subject, String writer, String content, String pass, String email,
+			int readcnt, Date regdte, Date uptdte) {
 		super();
 		this.no = no;
+		this.refno = refno;
 		this.subject = subject;
 		this.writer = writer;
-		this.regdate = regdate;
-		this.readcount = readcount;
-	}
-
-	public Board(int no, String subject, String content, int readcount) {
-		super();
-		this.no = no;
-		this.subject = subject;
 		this.content = content;
-		this.readcount = readcount;
+		this.pass = pass;
+		this.email = email;
+		this.readcnt = readcnt;
+		this.regdte = regdte;
+		this.uptdte = uptdte;
 	}
-
 	public int getNo() {
 		return no;
 	}
 	public void setNo(int no) {
 		this.no = no;
-	}
-	public String getSubject() {
-		return subject;
-	}
-	public void setSubject(String subject) {
-		this.subject = subject;
-	}
-	
-	public String getWriter() {
-		return writer;
-	}
-
-	public void setWriter(String writer) {
-		this.writer = writer;
-	}
-
-	public String getContent() {
-		return content;
-	}
-	public void setContent(String content) {
-		this.content = content;
-	}
-	public Date getRegdate() {
-		return regdate;
-	}
-	public void setRegdate(Date regdate) {
-		this.regdate = regdate;
-	}
-	public int getReadcount() {
-		return readcount;
-	}
-	public void setReadcount(int readcount) {
-		this.readcount = readcount;
 	}
 	public int getRefno() {
 		return refno;
@@ -84,27 +46,55 @@ public class Board {
 	public void setRefno(int refno) {
 		this.refno = refno;
 	}
-	public Date getUptdate() {
-		return uptdate;
+	public String getSubject() {
+		return subject;
 	}
-	public void setUptdate(Date uptdate) {
-		this.uptdate = uptdate;
+	public void setSubject(String subject) {
+		this.subject = subject;
 	}
-
+	public String getWriter() {
+		return writer;
+	}
+	public void setWriter(String writer) {
+		this.writer = writer;
+	}
+	public String getContent() {
+		return content;
+	}
+	public void setContent(String content) {
+		this.content = content;
+	}
 	public String getPass() {
 		return pass;
 	}
 	public void setPass(String pass) {
 		this.pass = pass;
 	}
-
 	public String getEmail() {
 		return email;
 	}
-
 	public void setEmail(String email) {
 		this.email = email;
 	}
+	public int getReadcnt() {
+		return readcnt;
+	}
+	public void setReadcnt(int readcnt) {
+		this.readcnt = readcnt;
+	}
+	public Date getRegdte() {
+		return regdte;
+	}
+	public void setRegdte(Date regdte) {
+		this.regdte = regdte;
+	}
+	public Date getUptdte() {
+		return uptdte;
+	}
+	public void setUptdte(Date uptdte) {
+		this.uptdte = uptdte;
+	}
+	
 	
 	
 	

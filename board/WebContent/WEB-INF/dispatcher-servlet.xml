@@ -23,7 +23,15 @@
 		http://www.springframework.org/schema/websocket/spring-websocket.xsd
        http://www.springframework.org/schema/task
        http://www.springframework.org/schema/task/spring-task.xsd">
+       
+     <!-- 
+	# 공통설정파일 선언. (20200310)
+	데이터베이스 설정 정보 위치
+ 	-->
+	<context:property-placeholder location="classpath:/resource/properties/info"/>
+	
 	<context:annotation-config />
+	
 	<context:component-scan
 		base-package="board">
 		<context:include-filter type="annotation"
@@ -38,8 +46,8 @@
 		<!-- <property name="prefix" value="/WEB-INF/views/"></property> <property 
 			name="suffix" value=".jsp"/> -->
 	</bean>
-
- <bean id="messageSource" class="org.springframework.context.support.ResourceBundleMessageSource">
+	
+	<bean id="messageSource" class="org.springframework.context.support.ResourceBundleMessageSource">
 	  	<property name="basenames">
 	  		<list>
 	  		<!-- class path로 설정된 기본 위치에서 파일을 생성. -->
@@ -48,6 +56,35 @@
 	  	</property>
 	  	<property name="defaultEncoding" value="utf-8"/>
 	  </bean>
+
+	<bean id="dataSource" class="org.apache.commons.dbcp.BasicDataSource"
+		destroy-method="close">
+		<property name="driverClassName" value="${driver}"></property>
+		<property name="url" value="${dbserver}"></property>
+		<property name="username" value="${name}"></property>
+		<property name="password" value="${pass}"></property>
+	</bean>
+	
+	<!-- 2. Mybatis 설정 -->
+	<bean id="sqlSessionFactory" class="org.mybatis.spring.SqlSessionFactoryBean">
+		<!-- dbcp로 연결된 정보를 framework의 모듈에 할당 -->
+		<property name="dataSource" ref="dataSource"/>
+		<!-- mybatis 공통 설정 파일 선언. -->
+		<property name="configLocation" value="classpath:resource/mybatis.Spring.xml"/>
+	</bean>
+	<!-- 3. Dao 인터페이스 folder 위치 설정 
+			1) 추가 등록시, value값에 (,) 콤마로 추가 처리.
+			ex)
+			value="springweb.a03_database.repository,
+					springweb.a04_board.repository
+			2) 선언된 인터페이스는 상속하는 실제 객체를 통해서 할당되어 service단에
+				넘겨준다.
+	-->
+	 <bean class="org.mybatis.spring.mapper.MapperScannerConfigurer">
+	 	<property name="basePackage" value="board.dao"/>
+	 </bean>
+	 
+	
 
 </beans> 
 

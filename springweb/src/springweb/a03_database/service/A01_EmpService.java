@@ -25,4 +25,12 @@ public class A01_EmpService {
 	public Emp empOne(int empno) {
 		return dao.empOne(empno);
 	}
+	
+	public void updateEmp(Emp upt) {
+		dao.updateEmp(upt);
+	}
+	
+	public void deleteEmp(int empno) {
+		dao.deleteEmp(empno);
+	}
 }

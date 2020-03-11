@@ -41,11 +41,28 @@ public class A02_DeptController {
 		service.insertDept(ins);
 		return "redirect:/deptlist.do";
 	}
+	
 	@RequestMapping("/deptDetail.do")
-	public String deptDetail(@RequestParam("deptno") int deptno, Model d){
+	public String deptDetail(@RequestParam("deptno") int deptno, Model d) {
 		System.out.println("## 부서 상세 화면 ##");
-		System.out.println("넘겨온 부서 번호 :: "+deptno);
-		d.addAttribute("dept", service.detailDept(deptno));
+		System.out.println("선택된 부서 번호 :: "+deptno);
+		d.addAttribute("dept",service.detailDept(deptno));
 		return "WEB-INF\\view\\a03_db\\a02_deptDetail.jsp";
+	}
+	
+	@RequestMapping("/deptUpdate.do")
+	public String deptUpdate(Dept dept) {
+		System.out.println("## 부서 수정 ##");
+		System.out.println("## 수정 할 부서 id :: "+dept.getDeptno());
+		service.updateDept(dept);
+		return "redirect:/deptlist.do";
+	}
+	
+	@RequestMapping("/deptDelete.do")
+	public String deptDelete(@RequestParam("deptno") int deptno){
+		System.out.println("## 부서 삭제 ##");
+		System.out.println("삭제할 부서 :: "+deptno);
+		service.deleteDept(deptno);
+		return "redirect:/deptlist.do";
 	}
 }

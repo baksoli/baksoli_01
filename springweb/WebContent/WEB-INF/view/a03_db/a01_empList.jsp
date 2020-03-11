@@ -31,7 +31,6 @@
 		
 		$(".data").dblclick(function(){
 			var empno = $(this).attr("id");
-			alert("확인할 empno :: "+empno);
 			// 상세 처리할 controller 호출.
 			$(location).attr("href","${path}/empDetail.do?empno="+empno);
 		});
