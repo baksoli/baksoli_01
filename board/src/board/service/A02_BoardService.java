@@ -1,14 +1,18 @@
 package board.service;
 
+import java.io.File;
+import java.io.IOException;
+import java.nio.file.Files;
 import java.util.ArrayList;
-import java.util.Date;
-import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
+import org.springframework.web.multipart.MultipartFile;
 
 import board.dao.BoardDao;
 import board.vo.Board;
+import board.vo.BoardFile;
 import board.vo.BoardSch;
 
 @Service
@@ -17,18 +21,16 @@ public class A02_BoardService {
 	private BoardDao dao;
 	
 	// 리스트 되는 데이터 메서드 선언.
-//	public ArrayList<Board> listBoard(Board board){
-//		return dao.listBoard(board);
-//	}
-	public List<Board> boardList(BoardSch sch){
-		List<Board> blist = new ArrayList<Board>();	
-//		blist.add(new Board(1,"첫번째 글","홍길동",new Date(),0));
-//		blist.add(new Board(2,"두번째 글","김길동",new Date(),2));
-//		blist.add(new Board(3,"세번째 글","신길동",new Date(),1));
-//		blist.add(new Board(4,"네번째 글","마길동",new Date(),3));
-//		blist.add(new Board(5,"다섯번째 글","오길동",new Date(),4));
-		return blist;
+	public ArrayList<Board> getList(BoardSch sch){
+		return dao.getList(sch);
 	}
+	
+	// 1. 경로1(web현재 폴더) 경로2(temp폴더)
+	@Value("${upload1}")
+	private String upload1;
+	
+	@Value("${upload2}")
+	private String upload2;
 	
 	// 등록 처리
 	public void insert(Board ins) {
@@ -37,5 +39,44 @@ public class A02_BoardService {
 //		System.out.println("작성자 : "+ins.getWriter());
 //		System.out.println("내용 : "+ins.getContent());
 		dao.insertBoard(ins);
+		// 첨부파일 물리적 위치 지정/DB 등록.
+		String fname = null;
+		File tmpFile = null;
+		File orgFile = null;
+		BoardFile insFile = null;
+		
+		// 다중 파일 처리.
+		for(MultipartFile mpf:ins.getReport()) {
+			fname=mpf.getOriginalFilename();
+			// 파일이 없는 경우는 제외
+			if(fname!=null && !fname.trim().equals("")) {
+				insFile = new BoardFile(fname, upload1, ins.getSubject());
+				// DB에 입력처리.
+				
+				// 물리적 파일 저장
+				tmpFile = new File(upload2+fname);
+				System.out.println("경로(임시):"+upload2+fname);
+				// MultipartFile ==> File객체로 변환하여 특정한 위치에 저장.
+				if(!tmpFile.exists()) {
+					try {
+						mpf.transferTo(tmpFile);
+						
+						orgFile = new File(upload1+fname);
+						System.out.println("경로(최종):"+upload1+fname);
+						//if(!tmpFile.exists()) {
+							Files.copy(tmpFile.toPath(), orgFile.toPath());
+						//}
+					} catch (IllegalStateException e) {
+						// TODO Auto-generated catch block
+						e.printStackTrace();
+					} catch (IOException e) {
+						// TODO Auto-generated catch block
+						e.printStackTrace();
+					}
+				}
+			}
+		}
+	
+	
 	}
 }

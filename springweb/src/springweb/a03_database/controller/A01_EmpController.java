@@ -64,6 +64,9 @@ public class A01_EmpController {
 		service.updateEmp(upt);
 		// 상세화면으로 다시 전송(empno 요청값을 전달)
 		// 수정된 내용을 empno값을 전달하면서 검색되도록 처리.
+		
+		// 상세화면에 empno를 비롯한 수정데이터가 요청데이터로 넘어가지만
+		// 실제 받는 데이터는 empno뿐이다.
 		return "forward:/empDetail.do";
 	}
 	
@@ -72,7 +75,9 @@ public class A01_EmpController {
 	public String empDelete(@RequestParam("empno") int empno) {
 		System.out.println("삭제할 데이터의 id :: "+empno);
 		service.deleteEmp(empno);
-		return "forward:/emplist.do";
+		// 삭제 후 다시 emplist를 조회 처리.
+		// 요청값을 redirect를 통해서 전달하지 않고, 조회를 처리한다.
+		return "redirect:/emplist.do";
 	}
 	
 	

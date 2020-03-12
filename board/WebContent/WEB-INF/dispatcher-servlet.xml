@@ -41,11 +41,29 @@
 		<context:include-filter type="annotation"
 			expression="org.springframework.stereotype.Repository" />
 	</context:component-scan>
+	
+	<!-- 
+	controller에서 마지막 호출 되는 부분이 뷰에 대한 내용이며, bean으로 등록된 view와
+	jsp 뷰를 구분하기 위해 우선 순위를 선언한다.
+	bnViewResolver 와 viewResolver의 우선순위를 order로 지정한 후,
+	bean 이름이 container에 있으면, 해당  bean을 view로 처리하고,
+	그 외에는 해당 이름을 가진 jsp파일을 호출하게 선언한다.
+	 -->
+	<!-- bean이름으로 등록된 viewer를 처리하기 위한 resolver 
+	
+	-->
+	<bean id="bnViewResolver" class="org.springframework.web.servlet.view.BeanNameViewResolver"
+		p:order="0"
+	/>
+	<!-- jsp 처리를 위한 view -->	
 	<bean id="viewResolver"
 		class="org.springframework.web.servlet.view.InternalResourceViewResolver">
-		<!-- <property name="prefix" value="/WEB-INF/views/"></property> <property 
-			name="suffix" value=".jsp"/> -->
+		<!-- <property name="prefix" value="/WEB-INF/views/"></property> 
+			<property name="suffix" value=".jsp"/> -->
+		<property name="order" value="1"></property>
 	</bean>
+	<!-- 파일업로드 viewResolver 처리. -->
+	<bean id="multipartResolver" class="org.springframework.web.multipart.commons.CommonsMultipartResolver"/>
 	
 	<bean id="messageSource" class="org.springframework.context.support.ResourceBundleMessageSource">
 	  	<property name="basenames">

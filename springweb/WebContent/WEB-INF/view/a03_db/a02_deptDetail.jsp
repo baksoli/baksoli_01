@@ -16,17 +16,17 @@
 	$(document).ready(function() {
 		$("#uptBtn").click(function() {
 			// 수정 : 수정 처리하는 controller로 호출되게 action을 바꾸어 준다.
-			$("form").attr("action","${path}/deptUpdate.do");
+			$("form").attr("action", "${path}/deptUpdate.do");
 			$("form").submit();
 		});
-		
+
 		$("#delBtn").click(function() {
 			// 삭제
 			var deptno = $("[name=deptno]").val();
 			var dname = $("[name=dname]").val();
-			
-			if(confirm(dname+"를 삭제하시겠습니까?")){
-				$(location).attr("href","${path}/deptDelete.do?deptno="+deptno);
+
+			if (confirm(dname + "를 삭제하시겠습니까?")) {
+				$(location).attr("href","${path}/deptDelete.do?deptno="+ deptno);
 			}
 		});
 

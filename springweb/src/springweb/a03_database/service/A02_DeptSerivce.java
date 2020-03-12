@@ -26,7 +26,6 @@ public class A02_DeptSerivce {
 	public Dept detailDept(int deptno) {
 		return dao.detailDept(deptno);
 	}
-	
 	public void updateDept(Dept dept){
 		dao.updateDept(dept);
 	}

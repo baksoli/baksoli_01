@@ -28,6 +28,7 @@
 		
 		$(".data").dblclick(function(){
 			var deptno = $(this).attr("id");
+			alert("선택한 부서 번호 :: "+deptno);
 			$(location).attr("href","${path}/deptDetail.do?deptno="+deptno);
 		})
 	});

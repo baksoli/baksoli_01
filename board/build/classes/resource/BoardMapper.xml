@@ -5,15 +5,34 @@
 
 <mapper namespace="board.dao.BoardDao">
 
-	<resultMap type="board" id="boardResult"></resultMap>
-	<select id="listBoard" resultMap="boardResult" parameterType="board">
-		SELECT * FROM BOARD
-	</select>
-
 	<insert id="insertBoard" parameterType="board">
 		INSERT INTO board 
 		values(board_seq.nextval, #{refno}, #{subject},#{content},#{writer},
 			0,sysdate, sysdate,#{email},#{pass})
 	</insert>
 
+	<!-- ArrayList<Board> getList(BoardSch sch)
+		1. return 타입을 위하여 만들 객체 ResultMap 선언
+		2. <select id=? resultMap=? parameterType=?
+		3. sql 처리 및 like에 들어갈 property 선언.
+	 -->
+	<resultMap type="board" id="boardMap"></resultMap>
+	<select id="getList" resultMap="boardMap" parameterType="boardsch">
+		SELECT * FROM BOARD
+		WHERE 1=1
+		<if test="subject!=null">
+			AND subject LIKE '%'||#{subject}||'%'
+		</if>
+		<if test="writer!=null">
+		AND writer LIKE '%'||#{writer}||'%'
+		</if>
+		ORDER BY NO DESC
+	</select>
+	
+	<!-- public void uploadFile(BoardFile ins); -->
+	<insert id="uploadFile" parameterType="boardfile">
+		INSERT INTO boardfile
+		VALUES(board_seq.currval, #{fname},#{pathname}, #{subject} ,sysdate)
+	</insert>
+	
 </mapper>

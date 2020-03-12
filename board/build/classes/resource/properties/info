@@ -3,3 +3,8 @@ driver=oracle.jdbc.driver.OracleDriver
 dbserver=jdbc:oracle:thin:@localhost:1521:xe
 name=scott
 pass=tiger
+
+#파일서버위치
+upload1=C:/z01_spring/workspace/board/WebContent/z01_file/
+# eclipse의 tomcat workspace
+upload2=C:/z01_spring/workspace/.metadata/.plugins/org.eclipse.wst.server.core/tmp0/wtpwebapps/board/z01_file/

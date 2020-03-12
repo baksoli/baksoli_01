@@ -13,7 +13,7 @@
 <link rel="stylesheet" href="${path}/a00_com/bootstrap.min.css">
 <link rel="stylesheet" href="${path}/a00_com/jquery-ui.css">
 <style type="text/css">
-h2, th, td {
+h2, th{
 	text-align: center;
 }
 
@@ -42,6 +42,9 @@ h2, th, td {
 				$("#board").submit();
 			}
 		});
+		$("#addFile").click(function(){
+			$(".custom-file").append("<span onclick='remove(this)'> [X] </span><span><input name='report' type='file'><br></span>");
+		});	
 	});
 </script>
 </head>
@@ -52,7 +55,9 @@ h2, th, td {
 		<!-- 현재 등록한 내용을 controller단으로 전송 처리.
 			1. 서버에 데이터를 등록 처리하는 프로세스.
 		 -->
-		<form:form commandName="board" method="post" action="${path}/board.do?method=insert">
+		<form:form commandName="board" method="post" 
+			enctype="multipart/form-data"
+			action="${path}/board.do?method=insert">
 			<!-- 답변글 등록을 위한 처리. -->
 			<input type="hidden" name="refno" value="${empty(board.refno)?'0':board.refno}"/>
 			<table class="table table-hover">
@@ -84,6 +89,20 @@ h2, th, td {
 						<th style="vertical-align: unset">내용</th>
 						<td><form:textarea path="content" class="form-control"/>
 						<form:errors class="errorMsg" path="content"/></td>
+					</tr>
+					<tr>
+						<th>파일</th>
+						<td>
+							<div class="input-group">
+								<div class="input-group-prepend" style="width: 100%">
+									<span class="input-group-text" id="addFile">파일추가(클릭)</span>
+								</div>
+							</div>
+							<div class="custom-file">
+								<span onclick="remove(this)"> [X] </span><span>
+								<input name="report" type="file"><br></span>
+							</div>
+						</td>
 					</tr>
 					<tr>
 						<td colspan="2" style="text-align: right">

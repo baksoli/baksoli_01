@@ -2,6 +2,8 @@ package board.vo;
 
 import java.util.Date;
 
+import org.springframework.web.multipart.MultipartFile;
+
 public class Board {
 	//리스트할 단위 속성 내용.
 	private int no; // 번호
@@ -16,6 +18,10 @@ public class Board {
 	private int readcnt; //조회수
 	private Date regdte; // 등록일
 	private Date uptdte; // 수정일
+	
+	// client에서 넘어온 첨부파일을 stream 으로 전달할 수 있는 객체.
+	private MultipartFile[] report;
+	
 	public Board() {
 		super();
 		// TODO Auto-generated constructor stub
@@ -93,6 +99,12 @@ public class Board {
 	}
 	public void setUptdte(Date uptdte) {
 		this.uptdte = uptdte;
+	}
+	public MultipartFile[] getReport() {
+		return report;
+	}
+	public void setReport(MultipartFile[] report) {
+		this.report = report;
 	}
 	
 	

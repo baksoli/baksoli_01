@@ -74,9 +74,9 @@ h2, th, td {
 						<td><form:input path="writer" class="form-control" /></td>
 					</tr>
 					<tr>
-						<td colspan="2" style="text-align: right;"><input
-							type="submit" value="조회" class="btn btn-primary" /> <input
-							type="button" value="등록" id="regBtn" class="btn btn-info" /></td>
+						<td colspan="2" style="text-align: right;">
+						<input type="submit" value="조회" class="btn btn-primary" />
+						<input type="button" value="등록" id="regBtn" class="btn btn-info" /></td>
 					</tr>
 				</thead>
 			</table>

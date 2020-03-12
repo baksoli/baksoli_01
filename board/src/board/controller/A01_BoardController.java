@@ -30,7 +30,7 @@ public class A01_BoardController {
 		
 		// 화면에 전달할 모델 데이터 설정 처리.
 		// 화면(view단)에 blist 이름으로 데이터 전송.
-		d.addAttribute("blist", service.boardList(sch));
+		d.addAttribute("blist", service.getList(sch));
 		
 		return "WEB-INF\\view\\a01_boardList.jsp";
 	}
@@ -57,14 +57,12 @@ public class A01_BoardController {
 
 	@RequestMapping(params="method=insert")
 	public String isnert(Board ins, BindingResult bindingResult) {
-		new BoardInsertValidator().validate(ins, bindingResult);
+		System.out.println("첨부 파일 명 : "+ins.getReport()[0].getOriginalFilename());
 		
+		new BoardInsertValidator().validate(ins, bindingResult);
 		if(bindingResult.hasErrors()){
 			return "WEB-INF\\view\\a02_boardInsert.jsp";
 		}
-		
-		
-
 		// 서비스 단에 등록 처리 프로세스 호출.
 		service.insert(ins);
 		
