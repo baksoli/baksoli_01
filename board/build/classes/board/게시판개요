@@ -69,7 +69,8 @@
 		<bean id="bnViewResolver"><bean id="multipartResolver"> 설정.
 4. 파일업로드 View(jsp) 화면단 구성과 요청값으로 파일업로드 처리.
 	1) form enctype="multipart/form-data"
-	
+		input type="file" name="report"
+		
 5. controller 단에서 업로드하는 file을 받는 객체 선언.
 	1) 받는 VO 객체 안에 파일을 첨부할 수 있는 속성 선언.
 		private MultipartFile[] report;
@@ -85,10 +86,84 @@
 8. 파일 등록 관련 XXXMapper.xml 선언.
 ======================================================================
 다운로드
-9. 다운로드 viewer를 클래스로 선언. 
+9. 다운로드 viewer를 클래스로 선언. (dispather-servlet에 <bean>등록)
 10. 다운로드 viewer 컨테이너에 선언.
 11. 게시판 상세화면에서 해당 파일을 클릭시, 다운로드 되도록 
 	js controller 호출. 
+	
+# 게시판 상세화면 처리.
+1. 화면 UI 결정.
+	1) 전체 리스트 화면에서 row를 더블 클릭시 상세 데이터 출력.
+	2) 상세 화면 리스트 확인
+		NO,       refno, 
+		regdte,   uptdte,
+		subject,  readcnt,  
+		writer,   email,
+		content
+		
+		첨부파일 --> fname(파일명) list 형태
 
+		[수정] [삭제] [답글] [메인화면]
+
+2. 더블 클릭시 board?method=detail&no=@@@
+	로 상세화면 처리 호출.
+3. controller 구성.
+	board?method=detail에 no를 입력받는 메서드 선언.
+4. dao 
+	1) board의 sql, boardfile의 sql 작성
+		select * from board where no = @@@
+		select * from boardfile where no = @@@
+	2) public Board getBoard(int boardno);
+	3) public ArrayList<BoardFile> getFile(int boardno);
+	4) public void uptReadCnt(int empno);
+		
+5. mapper 처리
+	1) board와 boardfile의 정보를 가져오는 sql 작성.
+		select * from board where no = 22;
+
+		select * from boardfile where no = 22;
+		
+		UPDATE BOARD 
+		SET READCNT = READCNT +1
+		WHERE NO =22;
+		
+6. dao - service - contoller 
+	1) board VO와 boardFile VO를 model에 한번에 넘길 수 있도록 board에 추가.
+		(Board VO에 private ArrayList<BoardFile> fileInfo; 추가)
+	2) service
+		Board getBoard로 객체 생성,
+		setFileInfo로 getBoardFile 데이터를 저장 처리.
+		uptReadCnt 처리.
+		
+7. controller
+	1) model 데이터 설정
+	2) view 화면 구성.
+	
+# 수정 / 삭제 처리.
+1. sql
+	**수정
+	UPDATE Board 
+	SET UPTDTE = SYSDATE,
+		SUBJECT = '수정된 게시글이에요',
+		WRITER = '수정자',
+		EMAIL = 'editor@gmail.com',
+		CONTENT = '수정한 내용입니다.'
+	WHERE NO = 12;
+
+	**삭제
+	DELETE FROM board WHERE NO = 12;
+	
+2. dao
+	public void updateBoard(Board upt);
+	public void deleteBoard(int no);	
+3. mapper
+
+4. 화면단에서 
+	컨트롤러로 submit -> method=update 호출
+	컨트롤러로 location -> method=delete&no=##
+5. 컨트롤러 선언.
+	method=update 선언 요청값 board 데이터 정상 확인.
+	method=delete 선언 요청값 no 데이터 정상 확인.
+6. dao -> service -> controller
  
 

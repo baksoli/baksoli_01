@@ -42,6 +42,12 @@ h2, th, td {
 			// 각 메서드마다. ?method=insertForm 호출
 			$(location).attr("href","${path}/board.do?method=insertForm");
 		});
+		
+		$(".list").dblclick(function(){
+			var no = $(this).attr("id");
+			//alert("게시글 번호 :: "+no);
+			$(location).attr("href", "${path}/board.do?method=detail&no="+no);
+		});
 	});
 </script>
 <!-- 
@@ -105,7 +111,7 @@ h2, th, td {
 					}
 			-->
 			<c:forEach var="board" items="${blist}">
-				<tr>
+				<tr class="list" id="${board.no }">
 					<!-- board.getNo() -->
 					<td>${board.no }</td>
 					<td>${board.subject }</td>

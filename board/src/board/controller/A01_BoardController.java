@@ -6,6 +6,7 @@ import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 
 import board.service.A02_BoardService;
 import board.vo.Board;
@@ -38,6 +39,14 @@ public class A01_BoardController {
 	// 2. 상세 화면
 	// 	1) 수정 처리 기능 메서드
 	// 	2) 삭제 처리 기능 메서드
+	@RequestMapping(params="method=detail")
+	public String detail(@RequestParam("no") int no, Model d) {
+		System.out.println("## 상세 화면 ##");
+		System.out.println("게시글 번호 :: "+no);
+		d.addAttribute("board",service.getBoard(no));
+		return "WEB-INF\\view\\a03_boardDetail.jsp";
+	}
+	
 	// 3. 등록 화면
 	// 	1) 등록 화면 메서드
 	// 	2) 등록 처리 기능 메서드
@@ -74,5 +83,18 @@ public class A01_BoardController {
 		return "redirect:/board.do?method=list";
 	}
 	
+	@RequestMapping(params="method=update")
+	public String update(Board upt, BindingResult bindingResult) {
+		service.updateBoard(upt);
+		return "forward:/board.do?method=detail";
+	}
+	
+	@RequestMapping(params="method=delete")
+	public String delete(@RequestParam("no") int boardno) {
+		System.out.println("## 삭제할 게시글 번호 :: "+boardno);
+		service.deleteBoard(boardno);
+		
+		return "forward:/board.do?method=list";
+	}
 	
 }

@@ -1,5 +1,6 @@
 package board.vo;
 
+import java.util.ArrayList;
 import java.util.Date;
 
 import org.springframework.web.multipart.MultipartFile;
@@ -21,6 +22,8 @@ public class Board {
 	
 	// client에서 넘어온 첨부파일을 stream 으로 전달할 수 있는 객체.
 	private MultipartFile[] report;
+	// db에서 넘겨온 첨부 파일 정보를 한번에 가져올 수 있게 처리.
+	private ArrayList<BoardFile> fileInfo;
 	
 	public Board() {
 		super();
@@ -106,6 +109,13 @@ public class Board {
 	public void setReport(MultipartFile[] report) {
 		this.report = report;
 	}
+	public ArrayList<BoardFile> getFileInfo() {
+		return fileInfo;
+	}
+	public void setFileInfo(ArrayList<BoardFile> fileInfo) {
+		this.fileInfo = fileInfo;
+	}
+	
 	
 	
 	

@@ -32,7 +32,36 @@
 	<!-- public void uploadFile(BoardFile ins); -->
 	<insert id="uploadFile" parameterType="boardfile">
 		INSERT INTO boardfile
-		VALUES(board_seq.currval, #{fname},#{pathname}, #{subject} ,sysdate)
+		VALUES(board_seq.currval, #{fname},#{pathname}, #{content} ,sysdate)
 	</insert>
+	
+	<select id="getBoard" resultType="board" parameterType="int">
+		select * from board where no=#{no}
+	</select>
+	
+	<resultMap type="boardfile" id="bfResult"></resultMap>
+	<select id="getFile" resultMap="bfResult" parameterType="int">
+		select * from boardfile where no=#{no}
+	</select>
+	
+	<update id="uptReadCnt" parameterType="int">
+		UPDATE BOARD 
+		SET READCNT = READCNT+1
+		WHERE NO=#{no}
+	</update>
+	
+	<update id="updateBoard" parameterType="board">
+		UPDATE Board 
+		SET UPTDTE = SYSDATE,
+			SUBJECT = #{subject},
+			WRITER = #{writer},
+			EMAIL = #{email},
+			CONTENT = #{content}
+		WHERE NO = #{no}
+	</update>
+	
+	<delete id="deleteBoard" parameterType="int">
+		DELETE FROM board WHERE NO=#{no}
+	</delete>
 	
 </mapper>

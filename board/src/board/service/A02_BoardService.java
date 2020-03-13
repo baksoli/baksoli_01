@@ -51,7 +51,8 @@ public class A02_BoardService {
 			// 파일이 없는 경우는 제외
 			if(fname!=null && !fname.trim().equals("")) {
 				insFile = new BoardFile(fname, upload1, ins.getSubject());
-				// DB에 입력처리.
+				// DB에 입력처리.(DAO)
+				dao.uploadFile(insFile);
 				
 				// 물리적 파일 저장
 				tmpFile = new File(upload2+fname);
@@ -76,7 +77,24 @@ public class A02_BoardService {
 				}
 			}
 		}
+	}
 	
-	
+	public Board getBoard(int boardno) {
+		// 1. 기본 board 정보 할당.
+		Board board = dao.getBoard(boardno);
+		// 2. 첨부 파일 정보 할당.
+		board.setFileInfo(dao.getFile(boardno));
+		//3. 조회 cnt 수정.
+		dao.uptReadCnt(boardno);
+		
+		return board;
+	}
+	// 게시글 수정
+	public void updateBoard(Board upt) {
+		dao.updateBoard(upt);
+	}
+	//게시글 삭제
+	public void deleteBoard(int no) {
+		dao.deleteBoard(no);
 	}
 }

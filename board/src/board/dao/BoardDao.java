@@ -21,4 +21,17 @@ public interface BoardDao {
 	// 업로드한 파일 정보 DB 입력.
 	public void uploadFile(BoardFile ins);
 	
+	// 상세화면 조회
+	public Board getBoard(int boardno);
+	
+	// 첨부파일 정보 조회
+	public ArrayList<BoardFile> getFile(int boardno);
+	
+	// 상세화면 클릭시 조회수 update
+	public void uptReadCnt(int boardno);
+	
+	public void updateBoard(Board upt);
+	
+	public void deleteBoard(int no);	
+	
 }
