@@ -1,0 +1,55 @@
+package programmersProject;
+
+import java.util.Arrays;
+
+public class Array01_KthNumber {
+	public static void main(String[] args) {
+		int[] array = {1,5,2,6,3,7,4};
+		int[][] commands = {{2,5,3},{4,4,1},{1,7,3}};
+		
+		int[] rtn = solution(array, commands);
+		System.out.println("******************************");
+		for(int i=0; i<commands.length; i++){
+			System.out.println(rtn[i]);
+		}
+		
+	}
+	
+	public static int[] solution(int[] array, int[][] commands) {
+		int commandsCnt = commands.length;
+		int[] answer = new int[commandsCnt];
+		for(int i=0; i<commandsCnt; i++){
+			int strCnt = commands[i][0];
+			int endCnt = commands[i][1];
+			int rtnValue = commands[i][2] - 1;
+			int arrayCnt = endCnt-strCnt+1;
+			System.out.println("arrayCnt : "+arrayCnt);
+			int[] editArrray = new int[arrayCnt];
+			int p = 0;
+			for(int j=strCnt-1; j<endCnt; j++){
+				System.out.println("array["+j+"] --> "+array[j]);
+				editArrray[p]=array[j];
+				
+				System.out.println(i+" 번째 "+p+"번" + editArrray[p]);
+				p++;
+				
+			}
+			Arrays.sort(editArrray);
+//			editArrray.sort();
+			System.out.println("return될 값 :: "+editArrray[rtnValue]);
+			
+			answer[i] = editArrray[rtnValue];
+			System.out.println("-----------------------------");
+		}
+        
+        return answer;
+    }
+	
+	public static int[] sort(int[] arrays){
+		int[] sortArrays = new int[arrays.length];
+		
+		
+		return sortArrays;
+	}
+	
+}
