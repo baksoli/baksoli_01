@@ -8,11 +8,6 @@ public class Array01_KthNumber {
 		int[][] commands = {{2,5,3},{4,4,1},{1,7,3}};
 		
 		int[] rtn = solution(array, commands);
-		System.out.println("******************************");
-		for(int i=0; i<commands.length; i++){
-			System.out.println(rtn[i]);
-		}
-		
 	}
 	
 	public static int[] solution(int[] array, int[][] commands) {
@@ -35,7 +30,6 @@ public class Array01_KthNumber {
 				
 			}
 			Arrays.sort(editArrray);
-//			editArrray.sort();
 			System.out.println("return될 값 :: "+editArrray[rtnValue]);
 			
 			answer[i] = editArrray[rtnValue];
@@ -44,12 +38,5 @@ public class Array01_KthNumber {
         
         return answer;
     }
-	
-	public static int[] sort(int[] arrays){
-		int[] sortArrays = new int[arrays.length];
-		
-		
-		return sortArrays;
-	}
 	
 }
